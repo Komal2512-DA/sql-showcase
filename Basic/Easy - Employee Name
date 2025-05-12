@@ -1,0 +1,27 @@
+-- Problem Statement :Write a SQL query to select names of employees with monthly salary > 2500 and employment duration < 10 months, ordered by employee_id ascending.
+
+-- The Employee table contain employee_id AS integer , name AS String , months AS int represent total number of months 
+employee working in the organization , salary AS int represent employees monthly salary 
+
+Sample Input : 
+| employee_id | name   | months | salary |
+| ------------ | ------ | ------ | ------ |
+| 11234        | Brian  | 10     | 2950   |
+| 23456        | Sophia | 3      | 3100   |
+| 34567        | Ethan  | 14     | 1750   |
+| 45678        | Olivia | 6      | 2250   |
+| 56789        | Liam   | 12     | 3900   |
+| 67890        | Ava    | 18     | 2700   |
+| 78901        | Mason  | 7      | 2000   |
+| 89012        | Emma   | 5      | 3300   |
+| 90123        | Noah   | 8      | 2500   |
+| 10234        | Mia    | 11     | 3650   |
+
+
+Approach : The approach I have used in this query is to filter out the employees name whose salary is greater than 2500 and has been worked in the organization for less than 10 year . For filter out such conditions , we use WHERE Clause , Once the data is filtered then sort them by using ORDER BY clause 
+
+Solution : 
+SELECT name 
+FROM Employee
+WHERE salary > 2500 AND months < 10
+ORDER BY employee_id ; 
