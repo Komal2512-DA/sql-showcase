@@ -1,0 +1,12 @@
+Problem : 
+Write an SQL query to retrieve a list of distinct city names from the STATION table where the city name starts and ends with a vowel (a, e, i, o, or u, case-insensitive).
+-- This problem statement inspired from HackerRank
+
+Approach : 
+Using REGEX , combine the both both scenerios together to match the pattern at start and end as well i.e. ^[char].*[char]$
+
+Solution : 
+
+SELECT DISTINCT city 
+FROM station 
+WHERE city REGEXP'^[aeiouAEIOU].*[aeiouAEIOU]$';
