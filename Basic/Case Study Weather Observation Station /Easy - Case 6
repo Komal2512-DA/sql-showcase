@@ -1,0 +1,24 @@
+Problem : 
+Write an SQL query to retrieve a list of distinct city names from the STATION table where the city name starts with a vowel (a, e, i, o, or u, case-insensitive).
+
+Station table Contain ID AS int, city AS Varchar(21) , state Varchar(20), lat_n INT , long_w INT where LAT_N is the northern latitude and LONG_W is the western longitude.
+- This Problem Statement is inspired from HackerRank
+
+We can use 3 different Approach to solve this query 
+
+Solution : 
+
+Approach 1 : In regex , ^[char] matches only if the char is at start , but if [^char] (coret inside the square bracket) means any character should not be the same as inside char
+SELECT DISTINCT city 
+FROM station 
+WHERE city REGEXP'^[aeiouAEIOU]';
+
+Approach 2 : LEFT clause returns how many characters you would like to get from Left , so we can easily find out if only 1 character from the left is vowel or not .
+SELECT DISTINCT city 
+FROM station 
+WHERE LEFT(city, 1) IN ('a','e','i','o','u');
+
+Approach 3 : LIKE clause used for partial match , i.e. 'a%' means starts from a and afterward it can be any character.
+SELECT DISTINCT city 
+FROM station 
+WHERE city LIKE 'a%' OR city LIKE 'e%' OR city LIKE 'i%' OR city LIKE 'o%' OR city LIKE 'u%';
