@@ -1,0 +1,14 @@
+Here’s a concise content-style phrase (as seen in HackerRank challenge descriptions) for the same query:
+
+Query the following two values from the STATION table:
+- The sum of all values in LAT_N, rounded to n decimal places.
+- The sum of all values in LONG_W, rounded to n decimal places.
+
+Approach : 
+First, calculate the sum of the values ( SUM is an aggregated function) in the specified column. Then, apply the ROUND function to this sum to fix the number of decimal places. 
+Finally, use an alias to assign a temporary name to the rounded result for clarity in the output. 
+
+Solution : 
+SELECT ROUND(SUM(lat_n),2) AS total_lat_n, 
+        ROUND(SUM(long_w),2) AS total_long_w
+FROM station ; 
