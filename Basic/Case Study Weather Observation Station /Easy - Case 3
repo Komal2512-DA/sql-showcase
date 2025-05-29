@@ -1,0 +1,16 @@
+Problem Statement:
+You are given a table named STATION, which contains information about various cities. The table has the following relevant columns:
+ID AS int, city AS Varchar(21) , state Varchar(20), lat_n INT , long_w INT where LAT_N is the northern latitude and LONG_W is the western longitude.
+
+Write an SQL query to retrieve a list of unique city names (CITY) from the STATION table where the ID number is even. The result can be in any order, but duplicate city names must be excluded from the output.
+
+-- This exercise is adapted from a HackerRank challenge
+
+Approach : In this Query , DISTINCT clause used to retrieve unique data or info from the column and use WHERE clause to filter that id is even or not from station.
+
+Solution : 
+
+SELECT DISTINCT city 
+FROM station 
+WHERE MOD(id,2) = 0;
+
