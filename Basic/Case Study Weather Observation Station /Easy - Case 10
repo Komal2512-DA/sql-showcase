@@ -1,0 +1,11 @@
+Problem : 
+Write an SQL query to retrieve a list of distinct city names from the STATION table where the city name does not end with a vowel (a, e, i, o, or u, case-insensitive).
+-- This problem inspired from HackerRank 
+
+Approach : 
+In REGEX , using caret inside the sqaure brackets represents that the characters should not match .
+
+Solution : 
+SELECT DISTINCT city 
+FROM station 
+WHERE city REGEXP'[^aeiouAEIOU]$';
