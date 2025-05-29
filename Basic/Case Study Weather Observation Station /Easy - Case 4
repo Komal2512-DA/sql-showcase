@@ -1,0 +1,18 @@
+Problem : 
+
+Write an SQL query to find the difference between:
+- The total number of city entries in the CITY column (including duplicates), and
+- The number of distinct city names in the CITY column (excluding duplicates).
+
+Station table Contain ID AS int, city AS Varchar(21) , state Varchar(20), lat_n INT , long_w INT where LAT_N is the northern latitude and LONG_W is the western longitude.
+This problem statement derieved from HackerRank .
+
+Aprroach : 
+- First step to calculate the count of total cities .
+- Second step to calculate the count of unique cities.
+- Then find out the difference between both of them and because of not executing 2 queries separately , so we perform this calculation inside a subquery.
+
+Solution : 
+SELECT(
+    (SELECT COUNT(city) FROM Station) - (SELECT COUNT(DISTINCT city) FROM station)
+);
