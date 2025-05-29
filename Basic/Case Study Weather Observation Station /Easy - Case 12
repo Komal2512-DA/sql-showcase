@@ -1,0 +1,12 @@
+Problem : 
+Get a list of distinct CITY names from the STATION table where the city name does not start with a vowel and does not end with a vowel.
+-- This exercise is adapted from a HackerRank challenge.
+
+Approach : 
+- to get the unique city , use DISTINCT clause 
+- to match the patterns , use REGEX , caret inside square bracket represents , it should not match and caret outside square bracket means match pattern with the starting character and dollar outside sqaure bracket means match the pattern with the last character 
+
+Solution : 
+SELECT DISTINCT city 
+FROM station 
+WHERE city REGEXP'^[^aeiou].*[^aeiou]$';
