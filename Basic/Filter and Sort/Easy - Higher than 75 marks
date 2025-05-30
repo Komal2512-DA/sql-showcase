@@ -1,0 +1,25 @@
+Problem : 
+Select the names of students from the STUDENTS table who have achieved a score greater than 75. Sort the result set by the final three characters of each student's name. In cases where multiple names share the same three-letter suffix, use the student ID as a secondary sorting key in ascending order.
+
++--------+--------+
+| Column | Type   |
++--------+--------+
+| ID     | Integer|
+| Name   | String |
+| Marks  | Integer|
++--------+--------+
+The Name column only contains uppercase (A-Z) and lowercase (a-z) letters.
+-- This problem statement is inspired from Hackerrank .
+
+Approach : 
+- Find students whose marks scored higher than 75 by using WHERE clause.
+- From those students, retrieve their names.
+- Sort the names by their last three characters.
+- If multiple names share the same ending, order them by ID in increasing order and if you dont mention type of sort , then the default sort is ASC.
+
+
+Solution : 
+SELECT name 
+FROM students 
+WHERE marks > 75
+ORDER BY RIGHT(name, 3), id ;
