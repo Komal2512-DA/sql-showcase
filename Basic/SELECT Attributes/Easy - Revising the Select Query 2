@@ -1,0 +1,23 @@
+Problem : 
+You are given a table named CITY with the following schema:
+
++-------------+---------------+
+| Field       | Type          |
++-------------+---------------+
+| ID          | NUMBER        |
+| NAME        | VARCHAR2(17)  |
+| COUNTRYCODE | VARCHAR2(3)   |
+| DISTRICT    | VARCHAR2(20)  |
+| POPULATION  | NUMBER        |
++-------------+---------------+
+
+Retrieve the names of all cities in the CITY table where the CountryCode is 'USA' and the population exceeds 120000.
+
+Approach : 
+- to fetch the particular attribute , use the name of that column 
+- use WHERE clause to filter such conditions 
+
+Solution : 
+SELECT name 
+FROM city 
+WHERE CountryCode = 'USA' AND population > 120000;
