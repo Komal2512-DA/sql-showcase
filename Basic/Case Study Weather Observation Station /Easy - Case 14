@@ -1,0 +1,15 @@
+Problem Statement:
+Write an SQL query to find the greatest value of LAT_N from the STATION table where LAT_N is less than 137.2345.
+Your result should be truncated to 4 decimal places.
+-- This exercise is adapted from a HackerRank challenge.
+
+Approach : 
+Use Truncate that means to cut off the number after a certain number of decimal places without rounding.
+Filter the values using WHERE clause . 
+Finally, use an alias to assign a temporary name to the rounded result for clarity in the output.
+
+Solution : 
+SELECT TRUNCATE(MAX(lat_n), 4) AS max_lat_n
+FROM station 
+WHERE lat_n < 137.2345;
+
