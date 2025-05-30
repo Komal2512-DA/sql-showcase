@@ -1,0 +1,12 @@
+Problem Statement:
+Query the STATION table to find the minimum value of LAT_N where it is strictly greater than 38.7780.
+The result should be rounded to 4 decimal places.
+-- This problem is adapted from a HackerRank SQL challenge.
+
+Approach : 
+Use MIN aggregated function to find the minimum value of northern latitude which is less than 38.7780 and filter the value by using WHERE clause Finally, apply the ROUND function.  
+
+Solution : 
+SELECT ROUND(MIN(lat_n), 4) AS lat_n 
+FROM station 
+WHERE lat_n > 38.7780;
