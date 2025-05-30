@@ -1,0 +1,19 @@
+Problem Statement:
+Write an SQL query to retrieve the LONG_W (Western Longitude) from the STATION table that corresponds to the smallest LAT_N (Northern Latitude) which is greater than 38.7780.
+The output should be rounded to 4 decimal places.
+-- This problem is adapted from a HackerRank SQL challenge.
+
+Approach : 
+-First, round the LONG_W value from the STATION table where the LAT_N is the smallest possible value greater than 38.7780.
+-SQL does not allow the use of aggregate functions (like MIN) directly in the WHERE clause. Therefore, to filter the minimum latitude, use a subquery that returns the minimum LAT_N less than 38.7780.
+-Then, use this subquery result in your outer query's WHERE clause to retrieve the corresponding LONG_W.
+-Finally, apply the ROUND function to truncate the LONG_W value to 4 decimal places.
+
+Solution : 
+SELECT ROUND(long_w , 4) AS long_w
+FROM station 
+WHERE lat_n = (
+    SELECT MIN(lat_n)
+    FROM station 
+    WHERE lat_n > 38.7780
+);
