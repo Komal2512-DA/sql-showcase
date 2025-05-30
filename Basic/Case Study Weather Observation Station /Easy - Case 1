@@ -1,0 +1,10 @@
+Problem Statement : Get a list of CITY and STATE entries from the STATION table.
+-- This exercise is adapted from a HackerRank challenge
+
+Station table Contain ID AS int, city AS Varchar(21) , state Varchar(20), lat_n INT , long_w INT where LAT_N is the northern latitude and LONG_W is the western longitude.
+
+Approach : In this Query , We require to fetch the specific column data 
+
+Solution : 
+SELECT city , state 
+FROM station ;
