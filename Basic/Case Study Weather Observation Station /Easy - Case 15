@@ -1,0 +1,19 @@
+Problem Statement:
+Write an SQL query to find the Western Longitude (LONG_W) corresponding to the largest Northern Latitude (LAT_N) from the STATION table where LAT_N is less than 137.2345.
+Round the result to 4 decimal places.
+-- This exercise is adapted from a HackerRank challenge.
+
+Approach : 
+-First, round the LONG_W value from the STATION table where the LAT_N is the highest possible value less than 137.2345.
+-SQL does not allow the use of aggregate functions (like MAX) directly in the WHERE clause. Therefore, to filter the maximum latitude, use a subquery that returns the maximum LAT_N less than 137.2345.
+-Then, use this subquery result in your outer query's WHERE clause to retrieve the corresponding LONG_W.
+-Finally, apply the ROUND function to truncate the LONG_W value to 4 decimal places.
+
+Solution : 
+SELECT ROUND(long_w, 4) AS long_w
+FROM station 
+WHERE lat_n = (
+    SELECT MAX(lat_n) AS max_latn
+    FROM station 
+    WHERE lat_n < 137.2345
+) ;
