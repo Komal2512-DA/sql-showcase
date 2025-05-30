@@ -1,0 +1,25 @@
+Problem Statement
+You are given a table named CITY with the following schema:
+
++-------------+---------------+
+| Field       | Type          |
++-------------+---------------+
+| ID          | NUMBER        |
+| NAME        | VARCHAR2(17)  |
+| COUNTRYCODE | VARCHAR2(3)   |
+| DISTRICT    | VARCHAR2(20)  |
+| POPULATION  | NUMBER        |
++-------------+---------------+
+
+Write an SQL query to select all columns for American cities from the CITY table where the population is greater than 100000.
+The CountryCode for America is 'USA'.
+-- This problem statement derived from HackerRank 
+
+Approach : 
+- to fetch the each and every attribute , use * 
+- use WHERE clause to apply condition on the population and filter the American cities 
+
+Solution : 
+SELECT *
+FROM city 
+WHERE population > 100000 AND CountryCode = 'USA';
