@@ -1,0 +1,32 @@
+🧾 Problem Statement
+Each employee’s total earnings are calculated by multiplying their monthly salary by the number of months they’ve worked.
+Your task is to find the maximum total earnings among all employees, and determine how many employees have this same maximum total.
+Return both values as two space-separated integers.
+
+Employee 
+| Column       | Type    | Description                              |
+| ------------ | ------- | ---------------------------------------- |
+| employee_id  | INTEGER | Unique ID of the employee                |
+| name         | STRING  | Name of the employee                     |
+| months       | INTEGER | Number of months the employee has worked |
+| salary       | INTEGER | Monthly salary of the employee           |
+
+Explaination : 
+The query calculates the highest total earning from all employees and counts how many people earned that exact amount.
+It filters only those rows where salary × months equals the maximum total earnings.
+
+-- This SQL challenge has been retrieved from HackerRank to practice real-world SQL interview patterns.
+
+Approach : 
+- First, calculate the total earnings for each employee using salary * months. 
+- Then use the MAX() function in a subquery to find the highest earning value among all employees.
+- Use the result from the inner query in the WHERE clause of the outer query to filter only those employees whose total earnings match the maximum.
+- Finally, apply COUNT(employee_id) to determine how many employees have that maximum total earning by grouping the earnings.
+
+Solution : 
+SELECT  months * salary AS earnings , COUNT(employee_id) AS total_employees
+FROM Employee
+WHERE months * salary = 
+                (SELECT  MAX(months * salary) AS earnings 
+                FROM Employee) 
+GROUP BY months * salary;
