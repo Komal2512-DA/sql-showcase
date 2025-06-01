@@ -1,0 +1,47 @@
+🧾 **Problem Statement**
+Samantha attempted to calculate the average salary for all employees in the EMPLOYEES table, but her keyboard’s 0 key was broken, so every salary was processed with all zeroes removed.
+You need to calculate the difference between the actual average salary and the wrongly calculated one, rounding the result up to the nearest integer.
+
+**Employees** 
+| Column | Type    | Description                    |
+| ------ | ------- | ------------------------------ |
+| ID     | INTEGER | Unique identifier for employee |
+| Name   | STRING  | Name of the employee           |
+| Salary | INTEGER | Monthly salary                 |
+
+**Sample Input** : 
+| ID | Name     | Salary |
+| -- | -------- | ------ |
+| 1  | Kristeen | 1420   |
+| 2  | Ashley   | 2006   |
+| 3  | Julia    | 2210   |
+| 4  | Maria    | 3000   |
+
+**Explaination** : 
+Samantha calculated the average on corrupted values (0s removed), giving 98.00.
+The actual average was 2159.00, so the error is 2159 - 98 = 2061.
+
+-- his query was taken from a HackerRank challenge.
+
+Approach : 
+-First step is the convert the type of data into string to replace 0 with empty string .
+-Use CAST to convert the data type temporary and REPLACE function to replace the value of 0.
+-Then , find the difference between both of them . 
+
+Solution : 
+SELECT 
+  CEIL(AVG(salary) - AVG(CAST(REPLACE(salary, '0', '') AS UNSIGNED))) AS salary_difference
+FROM employees;
+
+Alternate Way : 
+WITH final AS (
+SELECT CASE 
+        WHEN CAST(salary AS CHAR) LIKE '%0%' 
+            THEN  REPLACE(CAST(salary AS CHAR) , '0', '') 
+            ELSE CAST(salary AS CHAR) 
+        END AS salary
+FROM employees )
+
+SELECT (
+  CEIL( (SELECT AVG(salary) FROM employees) - (SELECT AVG(salary) FROM final) ));
+
