@@ -1,0 +1,27 @@
+Problem : 
+You're working with a table named STATION that stores information about various cities, including their geographical coordinates.
+
+Using this data, you need to compute the Euclidean Distance between two points 
+P1(a,c) and P2(b,d) defined as:
+
+𝑎 : the minimum value of LAT_N (northern latitude)
+𝑏 : the maximum value of LAT_N
+𝑐 : the minimum value of LONG_W (western longitude)
+𝑑 : the maximum value of LONG_W
+
+The Euclidean Distance is calculated using the formula:
+         SQUARE ROOT of ( (a-b)^2 + (c-d)^2 )  
+Round the result to 4 decimal places.
+
+-- This SQL challenge has been retrieved from HackerRank to practice real-world SQL interview patterns.
+
+Approach : 
+- Use MAX() and MIN() to find the value of lat_n and long_w .
+- Then find the difference between min and max of lat_n and min and max of long_w .
+- Then use POWER(-----, 2) on both of diffrence values . 
+- Add both values returned by Power of difference of min and max of lat_n and long_w.
+- At the end , ROUND(---, 4) to round off the decimal value till 4 points.
+
+Solution : 
+SELECT ROUND(SQRT( POWER(MIN(lat_n) -  MAX(lat_n),2) + POWER(MIN(long_w) - MAX(long_w),2) ), 4)
+FROM station ;
