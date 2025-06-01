@@ -1,0 +1,61 @@
+📊 Problem Statement (Based on HackerRank):
+You are given a table named STATION, which includes various city records with their respective northern latitudes (LAT_N).
+Your task is to write a SQL query to calculate the median of the LAT_N values. The median is the value that separates the higher half from the lower half of a dataset.
+Ensure that the result is rounded to 4 decimal places.
+
+Station 
+| Field   | Type         |
+| ------- | ------------ |
+| ID      | NUMBER       |
+| CITY    | VARCHAR2(21) |
+| STATE   | VARCHAR2(2)  |
+| LAT_N  | NUMBER       |
+| LONG_W | NUMBER       |
+
+Approach : 
+- Use window function to rank the lat_n column , in this scenerio , we have to perform ranking by ROW_NUMBER() which return series from 1 and didn't skip any value.
+- Use ROW_NUMBER in respect to the sorting of lat_n in ASC and lat_n in DESC order .
+- Create CTE of data that we created along with row number. 
+- IF row_asc is equal to row_desc , that means , table contain odd number of data and at the point of row_asc = row_desc , that lat_n value is median , if uh calculate avg of it , then it return the same value , so using avg function becaz of this , we can easily perform the even rows operation as well, thats the reason use avg for odd rows as well . 
+- IF row_asc is not equal to row_desc , that means , table contain even number of data , and at the point of row_asc != row_desc then we have to find the value of row_desc +-1 , so it can match with the 2 values where if we calculate avg of lat_n  , then we get the median value of lat_n.
+- At the end , ROUND OFF the lat_n value.
+- This query is applicable for odd and even number of rows data . 
+
+Solution : 
+WITH data AS (
+    SELECT * , ROW_NUMBER() OVER (ORDER BY lat_n) AS row_asc, 
+                ROW_NUMBER() OVER (ORDER BY lat_n DESC) AS row_desc
+    FROM station
+)
+SELECT ROUND(AVG(lat_n), 4)
+FROM data 
+WHERE row_asc IN (row_desc, row_desc-1 , row_desc+1);
+
+Alternate Way : 
+Approach : 
+- In this scenario , create first CTE which have info regarding the all data and row_number of that data .
+- Create second CTE , in which we have the info of count of total rows . 
+- Use CASE WHEN statement to figure out is the data even or odd . 
+- If data is even , then find the AVG of lat_n and filter out the values of lat_n by count of row /2 and count of row / 2 +1 and then round off the value.
+- If data is odd , then find the AVG of lat_n and filter out the value where count of row /2 --- mid value and then round off.
+
+
+Solution : 
+WITH data AS (
+SELECT * , ROW_NUMBER() OVER (ORDER BY lat_n ) AS row_
+FROM Station), 
+total AS (
+SELECT COUNT(*) AS cnt
+FROM station )
+
+SELECT CASE 
+        WHEN cnt % 2 = 0 
+        THEN (SELECT ROUND(AVG(lat_n), 4)
+            FROM data
+            WHERE row_ = cnt/2 OR row_ = cnt/ 2 + 1)
+        WHEN cnt % 2 != 0 
+        THEN (SELECT ROUND(AVG(lat_n), 4)
+             FROM data 
+             WHERE row_ = cnt/2)
+                            END AS median 
+FROM total;
