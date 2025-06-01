@@ -20,6 +20,8 @@ Count how many times each profession appears in the table and print it in the fo
  - Sort the results by the count in ascending order.
  - If two occupations have the same count, sort them alphabetically.
 
+-- This problem statement is derived from Hackerrank.
+
 Sample Input : 
 | Name      | Occupation |
 | --------- | ---------- |
