@@ -1,0 +1,23 @@
+Problem : 
+Write a query to calculate the average population of all cities in the CITY table.
+The result should be rounded down to the nearest whole number.
+
+CITY
++--------------+------------------+
+| Field        | Type             |
++--------------+------------------+
+| ID           | NUMBER           |
+| NAME         | VARCHAR2(17)     |
+| COUNTRYCODE  | VARCHAR2(3)      |
+| DISTRICT     | VARCHAR2(20)     |
+| POPULATION   | NUMBER           |
++--------------+------------------+
+
+-- This question is inspired by a typical SQL task found on HackerRank
+
+Approach : 
+use of aggregate functions like AVG() along with rounding functions such as FLOOR() to control numerical output format.
+
+Solution : 
+SELECT FLOOR(AVG(population)) AS avg_population
+FROM city ;
