@@ -1,0 +1,25 @@
+Problem : 
+You're given a table named STATION, which stores geographical data about various stations, including their latitudes and longitudes.
+
+From this table, you need to calculate the Manhattan Distance between two points 
+𝑃1(𝑎,𝑏) and 𝑃2(𝑐,𝑑) where:
+𝑎 : a is the minimum value of LAT_N (northern latitude)
+𝑏 : b is the minimum value of LONG_W (western longitude)
+𝑐 : c is the maximum value of LAT_N
+𝑑 : d is the maximum value of LONG_W
+
+The Manhattan Distance between 
+𝑃1 and 𝑃2 is calculated as:
+          ∣a−c∣ + ∣b−d∣
+Round the final result to 4 decimal places.
+
+-- This SQL challenge has been retrieved from HackerRank to practice real-world SQL interview patterns.
+
+Approach : 
+- use ABS() to make sure the value should be positive and find the difference if a and c , then b and d .
+- Then add both of them and round them till 4 decimal points using ROUND( ----, 4).
+
+
+Solution : 
+SELECT ROUND(abs(MAX(lat_n) - MIN(lat_n)) + abs(MAX(long_w)-MIN(long_w)), 4)
+FROM station ;
