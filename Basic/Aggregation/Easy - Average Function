@@ -1,0 +1,23 @@
+Problem : 
+Write a query to find the average population of all cities in the CITY table where the District is 'California'.
+
+CITY
++--------------+------------------+
+| Field        | Type             |
++--------------+------------------+
+| ID           | NUMBER           |
+| NAME         | VARCHAR2(17)     |
+| COUNTRYCODE  | VARCHAR2(3)      |
+| DISTRICT     | VARCHAR2(20)     |
+| POPULATION   | NUMBER           |
++--------------+------------------+
+
+-- This problem reflects a common SQL challenge on learning platforms like HackerRank
+
+Approach : 
+Filtering specific data with a WHERE clause and computing aggregated results using functions like AVG().
+
+Solution : 
+SELECT AVG(population) AS avg_pop
+FROM city 
+WHERE district = 'California';
