@@ -1,0 +1,61 @@
+Problem Statement :
+You are given a table named OCCUPATIONS that stores the names of people along with their professions.
+      Occupations
+| Column     | Type   |
+| ---------- | ------ |
+| Name       | String |
+| Occupation | String |
+
+The Occupation column will contain one of the following values only: Doctor, Professor, Singer, or Actor.
+
+You are required to write SQL queries to generate two result sets:
+1. Alphabetically Sorted List with Profession Initials
+List all names from the OCCUPATIONS table in alphabetical order, appending the first letter of the profession in parentheses immediately after the name.
+Example output format: AnActorName(A) , ADoctorName(D) , AProfessorName(P) , ASingerName(S)
+
+2. Count of Each Occupation
+Count how many times each profession appears in the table and print it in the format:
+             There are a total of [count] [occupation]s.
+ - Use the lowercase form of each occupation.
+ - Sort the results by the count in ascending order.
+ - If two occupations have the same count, sort them alphabetically.
+
+Sample Input : 
+| Name      | Occupation |
+| --------- | ---------- |
+| Aamina    | Doctor     |
+| Ashley    | Professor  |
+| Belvet    | Professor  |
+| Britney   | Professor  |
+| Christeen | Singer     |
+| Eve       | Actor      |
+| Jane      | Singer     |
+| Jennifer  | Actor      |
+| Jenny     | Singer     |
+| Julia     | Doctor     |
+| Ketty     | Actor      |
+| Kristeen  | Singer     |
+| Maria     | Professor  |
+| Meera     | Professor  |
+| Naomi     | Professor  |
+| Priya     | Doctor     |
+| Priyanka  | Professor  |
+| Samantha  | Actor      |
+
+Approach : 
+- For the execution of first query , we required to concat the name with the first alphabet of their profession enclosed in paranthesis. 
+- Use CONCAT() as accordingly how I required to concat and for getting the first char from occupation, we use LEFT(----, 1).
+- Once , names are concatenate in respect to their profession and order them by name . 
+- For the execution of second query , we required to concat the statement in which mention the count of occupation and occupation name . 
+- Use CONCAT() as accordingly .
+- We use COUNT() to count the occupation , for that we have to first group the occupation for getting the count in respect to their occupation . 
+- Once info concatenated , sort the info by count of occupation , and if there are more than same count of occupation , then sort them by occupation  name , for this use ORDER BY clause.
+
+Solution : 
+SELECT CONCAT(name, '(', LEFT(occupation, 1), ')') AS name
+FROM occupations
+ORDER BY name ;
+SELECT CONCAT('There are a total of ', COUNT(occupation), ' ', LOWER(occupation), 's.') 
+FROM occupations 
+GROUP BY occupation
+ORDER BY COUNT(occupation), occupation;
