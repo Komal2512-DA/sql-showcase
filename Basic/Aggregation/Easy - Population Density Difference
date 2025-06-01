@@ -1,0 +1,22 @@
+Problem : 
+Write a query to find the difference between the maximum and minimum populations recorded in the CITY table.
+
+CITY
++--------------+------------------+
+| Field        | Type             |
++--------------+------------------+
+| ID           | NUMBER           |
+| NAME         | VARCHAR2(17)     |
+| COUNTRYCODE  | VARCHAR2(3)      |
+| DISTRICT     | VARCHAR2(20)     |
+| POPULATION   | NUMBER           |
++--------------+------------------+
+-- This question is inspired by a typical SQL task found on HackerRank
+
+Approach : 
+ Use the MAX() function to get the highest population and MIN() function to get the lowest population . 
+Once you get the max and min of population , find out the difference between them .
+
+Solution : 
+SELECT MAX(population) - MIN(population)
+FROM city ;
