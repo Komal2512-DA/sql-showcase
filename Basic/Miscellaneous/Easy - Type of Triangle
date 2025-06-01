@@ -1,0 +1,33 @@
+Problem : 
+You are given a table called TRIANGLES that contains three columns: A, B, and C, each representing the lengths of the three sides of a potential triangle.
+Your task is to determine what type of triangle (if any) each set of values forms and return one of the following classifications for each row:
+- Equilateral – All three sides are of equal length.
+- Isosceles – Exactly two sides are of equal length.
+- Scalene – All three sides are of different lengths.
+- Not A Triangle – The given sides do not satisfy the triangle inequality rule, so they cannot form a triangle.
+
+-- This problem is inspired by a triangle classification exercise commonly found on HackerRank, a platform that offers coding challenges to improve and test your programming and SQL skills.
+
++----+----+----+
+| Column | Type |
++----+----+----+
+|  A   | INT |  
+|  B   | INT |  
+|  C   | INT | 
++----+----+----+
+
+Approach : 
+The original challenge focuses on using CASE statements and understanding logical conditions in SQL.
+First step is to check that the sides A , B  and C together forms a triangle or not , if not then mention their type as not a triangle , if yes , then continue by having 
+a look onto the criteria where they meet Equilateral condition ,once you can find the equilateral criteria then look for Isosceles or Scalene . 
+--Avoid : First try to have a look onto the condition where they create triangle or not , if yes then continue with equilateral , not isosceles . Reason behind it that the 
+condition we check for equilaterial is partial equal to isosceles , if isosceles criteria is checked out first , then we not be able to check for the equilateral and then 
+check any one of the rest .
+
+Solution : 
+SELECT 
+    CASE WHEN A + B <= C OR B + C <= A OR C + A <= B THEN 'Not A Triangle'
+        WHEN A = B AND B = C AND C = A THEN 'Equilateral'
+        WHEN A = B OR B = C OR C = A THEN 'Isosceles'
+        ELSE 'Scalene' END AS triangle_type
+FROM triangles;
