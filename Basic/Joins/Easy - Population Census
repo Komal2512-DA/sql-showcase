@@ -2,7 +2,7 @@ Problem :
 You're given two tables: CITY and COUNTRY. Each city in the CITY table has a reference to a country using the CountryCode, which corresponds to the Code field in the COUNTRY table.
 Your task is to write a SQL query that calculates the total population of all cities that are located in countries within the continent of 'Asia'.
 
-                                                                    Country
+  City                                                                  Country
 | Field       | Type         |                                      | Field          | Type         |
 | ----------- | ------------ |                                      | -------------- | ------------ |
 | ID          | NUMBER       |                                      | CODE           | VARCHAR2(3)  |
