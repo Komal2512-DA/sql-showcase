@@ -1,0 +1,35 @@
+Problem : 
+Using the CITY and COUNTRY tables, write a query to retrieve the names of all cities located in countries that belong to the continent 'Africa'.
+
+🔗 Note: The CITY table's CountryCode column corresponds to the Code column in the COUNTRY table.
+
+ City                                                                   Country
+| Field       | Type         |                                      | Field          | Type         |
+| ----------- | ------------ |                                      | -------------- | ------------ |
+| ID          | NUMBER       |                                      | CODE           | VARCHAR2(3)  |
+| NAME        | VARCHAR2(17) |                                      | NAME           | VARCHAR2(44) |
+| COUNTRYCODE | VARCHAR2(3)  |                                      | CONTINENT      | VARCHAR2(13) |
+| DISTRICT    | VARCHAR2(20) |                                      | REGION         | VARCHAR2(25) |
+| POPULATION  | NUMBER       |                                      | SURFACEAREA    | NUMBER       |
+                                                                    | INDEPYEAR      | VARCHAR2(5)  |                                                                    
+                                                                    | POPULATION     | NUMBER       |
+                                                                    | LIFEEXPECTANCY | VARCHAR2(4)  |
+                                                                    | GNP            | NUMBER       |
+                                                                    | GNPOLD         | VARCHAR2(9)  |
+                                                                    | LOCALNAME      | VARCHAR2(44) |
+                                                                    | GOVERNMENTFORM | VARCHAR2(44) |                                                                    
+                                                                    | HEADOFSTATE    | VARCHAR2(32) |
+                                                                    | CAPITAL        | VARCHAR2(4)  |
+                                                                    | CODE2          | VARCHAR2(2)  |
+
+-- This query is based on a problem from HackerRank's SQL domain.
+
+Approach : 
+- Join both tables on common key to find out the name of cities where continent is africa and continent is available in the country table.
+
+Solution : 
+SELECT c.name 
+FROM city c 
+JOIN country ct 
+ON c.countrycode = ct.code
+WHERE continent = "Africa";
