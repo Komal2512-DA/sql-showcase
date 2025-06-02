@@ -1,0 +1,41 @@
+Problem
+🧩 SQL Challenge: Classify Nodes in a Binary Tree
+You are given a table named BST that stores nodes of a binary tree. The table has two columns:
+N: an integer representing the value of the node.
+P: an integer representing the parent of node N.
+
+Your task is to write an SQL query to classify each node as one of the following types:
+Root: if the node has no parent 
+Leaf: if the node is not a parent of any other node
+Inner: if the node is neither a root nor a leaf
+
+The output should return the value of each node (N) along with its type (Root, Leaf, or Inner), sorted in ascending order of the node value (N).
+
+📝 This question is inspired by a problem from HackerRank.
+
+Approach :
+- Root is one who have not any parent , that means P IS NULL and return that Node value and marked type as Root  .
+- Inner is one who have parents but not a root , that means P IS NOT NULL (root have null in parent , so this will check if parent is not null that means it is not a root) And 
+that node should be present in Parent column , so we can identify which is parent and not a root . 
+- Leaf is one , who is not parent and not a root , for this scenario , filter node values who is not present in parent and its parents should not be null if null then its root . 
+- Union all of them and sort them by node value. 
+
+IMPORTANT TO BE NOTED :
+If any column contain NULL value , and when you apply filter "NOT IN" then this will not return any output becaz NOT IN clause is sensitive to filter out in case when column consists NULL values .
+For example , to find out Leaf node , i.e., it should be parent and should be root , for this , you have to use NOT IN clause to filter out which node is not present in parent column , but parent 
+column consists of NULL value , so it behaves inconsitent and doesn't return anything , to let him work , uh should also filter that Parent column should also not consist NULL to check NOT IN clause.
+
+
+Solution :
+SELECT N , 'Root' AS type 
+FROM BST
+WHERE P IS NULL
+UNION 
+SELECT N , 'Inner' AS type
+FROM BST 
+WHERE N IN (SELECT P FROM BST) AND P IS NOT NULL
+UNION 
+SELECT N, 'Leaf' AS type
+FROM BST 
+WHERE N NOT IN (SELECT P FROM BST WHERE P IS NOT NULL ) AND P IS NOT NULL
+ORDER BY N;
