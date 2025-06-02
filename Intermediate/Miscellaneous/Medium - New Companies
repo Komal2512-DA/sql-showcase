@@ -1,0 +1,72 @@
+Problem : 
+Amberella's corporation has recently acquired several new companies. Each company operates under the same organizational hierarchy:
+
+Founder → Lead Manager → Senior Manager → Manager → Employee
+
+You are given five tables representing different roles in the company hierarchy. Each table may contain duplicate records.
+
+Write a SQL query to output the following for each company:
+company_code, founder (founder's name), Count of lead managers, Count of senior managers, Count of managers, Count of employees
+
+Your output should be sorted in ascending order by company_code (as a string). So, for example, C_1, C_10, and C_2 should be sorted as:
+→ C_1, C_10, C_2
+
+Company 
+| Column        | Type   |
+| ------------- | ------ |
+| company_code  | String |
+| founder       | String |
+
+Lead_Manager 
+| Column              | Type   |
+| ------------------- | ------ |
+| lead_manager_code   | String |
+| company_code        | String |
+
+Senior_Manager
+| Column                | Type   |
+| --------------------- | ------ |
+| senior_manager_code   | String |
+| lead_manager_code     | String |
+| company_code          | String |
+
+Manager 
+| Column                | Type   |
+| --------------------- | ------ |
+| manager_code          | String |
+| senior_manager_code   | String |
+| lead_manager_code     | String |
+| company_code          | String |
+
+Employee 
+| Column               | Type   |
+| -------------------- | ------ |
+| employee_code        | String |
+| manager_code         | String |
+| senior_manager_code  | String |
+| lead_manager_code    | String |
+| company_code         | String |
+
+-- This Problem Statement is inspired by HackerRank Challenge . 
+
+Approach : 
+- Use join clause , join tables with each other on specific key . 
+- Then on grouping of company and its founder , find out how many lead managers are there , total senior manager , manager and employee in that company using COUNT clause. 
+- To achieve this use DISTINCT to avoid duplication of records .
+- At the end sort the data in company alpahbetically . 
+
+Solution : 
+
+SELECT c.company_code , founder , COUNT(DISTINCT lm.lead_manager_code) AS total_lead_manager, COUNT(DISTINCT sm.senior_manager_code) AS total_senior_manager, 
+      COUNT(DISTINCT m.manager_code) AS total_manager, COUNT(DISTINCT e.employee_code) AS total_employee
+FROM Company c 
+JOIN Lead_Manager lm 
+ON c.company_code = lm.company_code
+JOIN Senior_Manager sm 
+ON lm.lead_manager_code = sm.lead_manager_code 
+JOIN Manager m 
+ON sm.senior_manager_code = m.senior_manager_code
+JOIN Employee e 
+ON e.manager_code = m.manager_code
+GROUP BY c.company_code , founder
+ORDER BY c.company_code;
