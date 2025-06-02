@@ -1,0 +1,47 @@
+Problem :
+David has been asked by Shifa to prepare a report with three columns: Name, Grade, and Marks. The data comes from two tables: Students and Grades.
+Students 
+| Column | Type    |
+| ------ | ------- |
+| ID     | Integer |
+| Name   | String  |
+| Marks  | Integer |
+
+Grades 
+| Column    | Type    |
+| --------- | ------- |
+| Grade     | Integer |
+| Min_Mark  | Integer |
+| Max_Mark  | Integer |
+
+The report must follow these rules:
+- Hide names of students who received a grade less than 8. For those students, display "NULL" in the name column instead.
+- Sort the results by Grade in descending order.
+- For students with Grade 8 or higher, order them alphabetically by name if multiple students share the same grade.
+- For students with Grade less than 8, order them by their Marks in ascending order if multiple students share the same grade.
+
+-- This problem statement considered from the Hackerrank problems .
+
+Approach : 
+- Create CTE named data which consists the information of students and its grades . For this scenerio , Join both the tables on the condition where student marks lie between the min and max of grade marks.
+- Then from the CTE , first return the detail of student name , marks , grade using WHERE clause which filter the students who got grade more than or equal to 8 .
+- Then return the detail of students name as NULL , marks , grade using WHERE clause which filter students whose grade is less than 8.
+- Then append both table using UNION .
+- At the end , sort the output by grade in DESC, name ,marks.
+
+Solution : 
+WITH data AS (
+    SELECT id, name , marks, grade
+    FROM Students s
+    JOIN Grades g
+    ON s.marks BETWEEN Min_Mark AND Max_Mark
+)
+
+    SELECT name , grade , marks 
+    FROM data 
+    WHERE grade >= 8
+UNION 
+    SELECT NULL AS name , grade, marks
+    FROM data 
+    WHERE grade < 8
+ORDER BY grade DESC, name , marks;
