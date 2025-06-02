@@ -1,0 +1,49 @@
+Problem : 
+You are given three tables:
+Students 
+| Column Name | Data Type |
+| ----------- | --------- |
+| ID          | Integer   |
+| Name        | String    |
+
+Friends 
+| Column Name | Data Type |
+| ----------- | --------- |
+| ID          | Integer   |
+| Friend_ID   | Integer   |
+
+Packages 
+| Column Name | Data Type |
+| ----------- | --------- |
+| ID          | Integer   |
+| Salary      | Float     |
+
+Write a SQL query to find the names of students whose best friend received a higher salary than they did.
+Sort the result by the best friend’s salary in ascending order.
+
+Note: No two students received the same salary.
+-- This problem statement is inspired from HackerRank.
+
+Approach : 
+- Create a CTE named data to gather required columns: Student ID, Student Name, Best Friend ID (from Friends table), Student Salary (from Packages table). This will be done by Joining the tables together.
+- To get the best friend’s salary, we join the CTE with itself (use SELF join). Match friend_ID from d (d.friend_ID) with the student ID (d1.stdnt_id) from the table named d1.
+- This allows us to compare the student's salary with their best friend’s salary.
+- So d named table contain detail of student and d1 table contain the details of best friend. 
+- Then filter out student salary which is less than their best friend salary and return their student name . 
+- At the end , sort the result by best friend salary.
+
+Solution : 
+WITH data AS (
+SELECT s.id AS stdnt_id, s.name AS name, friend_ID, salary
+FROM Students s 
+LEFT JOIN Friends f 
+ON s.ID = f.ID
+JOIN packages p 
+ON p.ID = s.id )
+
+SELECT d.name AS stdnt_name 
+FROM data d
+JOIN data d1
+ON d.friend_ID = d1.stdnt_id
+WHERE d.salary < d1.salary
+ORDER BY d1.salary;
