@@ -1,0 +1,24 @@
+Problem : 
+Write a query to extract the details of the fourth and fifth highest salary employees from the employees table.
+
+Result:
+-- No two employees have the same salary.
+-- Return the columns employee_number, first_name, last_name, and salary.
+-- Return the result ordered by salary in descending order.
+
+This problem is inspired by Scaler 
+
+
+Approach : 
+- Select the required column name . 
+- sort the output on the basis of salary in desc order to find out the highest salaried employee.
+- We need to find out the 4th and 5th highest salaried employee. 
+- For this , use limit to retrieve only required number of rows . 
+- Use offset to skip the rows , whichever is not required .
+
+Solution : 
+SELECT employee_number, first_name, last_name,  salary
+FROM employees 
+ORDER BY salary DESC 
+LIMIT 2 
+OFFSET 3;
