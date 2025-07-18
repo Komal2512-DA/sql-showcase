@@ -1,0 +1,39 @@
+Problem : 
+Write a query to find the orderNumber and requiredDate of the orders which were ordered in 2003 December and the status is "Shipped".
+
+Result:
+Use the orderDate column to check for the orders that are ordered in 2003 December.
+Return the result ordered by orderNumber in ascending order.
+
+-- Inspired by Scaler 
+
+Orders : 
+Sample Input : 
+| orderNumber | orderDate  | requiredDate | shippedDate | status  | comments | customerNumber |
+| ----------- | ---------- | ------------ | ----------- | ------- | -------- | -------------- |
+| 10121       | 2003-05-07 | 2003-05-13   | 2003-05-13  | Shipped | NULL     | 353            |
+| 10122       | 2003-05-08 | 2003-05-16   | 2003-05-13  | Shipped | NULL     | 350            |
+| 10133       | 2003-06-27 | 2003-07-04   | 2003-07-03  | Shipped | NULL     | 141            |
+| 10135       | 2003-07-02 | 2003-07-12   | 2003-07-03  | Shipped | NULL     | 124            |
+| 10199       | 2003-12-01 | 2003-12-10   | 2003-12-06  | Shipped | NULL     | 475            |
+| 10200       | 2003-12-01 | 2003-12-09   | 2003-12-06  | Shipped | NULL     | 211            |
+| 10201       | 2003-12-01 | 2003-12-11   | 2003-12-02  | Shipped | NULL     | 129            |
+
+Sample Output :
+
+| orderNumber | requiredDate |
+| ----------- | ------------ |
+| 10199       | 2003-12-10   |
+| 10200       | 2003-12-09   |
+| 10201       | 2003-12-11   |
+
+Approach : 
+- Mention the required columnn in the SELECT clause . 
+- Filter orderDate in the month of dec and status is shipped .
+- Sort on the basis of position in the select clause .
+
+Solution : 
+SELECT orderNumber , requiredDate
+FROM orders 
+WHERE orderDate BETWEEN '2003-12-01' AND '2003-12-31' AND status = 'Shipped'
+ORDER BY 1;
