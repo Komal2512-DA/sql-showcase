@@ -1,0 +1,22 @@
+Problem : 
+Write a query to list down all the movies along with their details that have keywords like 'sport' or 'sequel' or 'suspense'.
+
+Result:
+-Return the columns 'original_title', 'director', 'genres', 'cast', 'budget', 'revenue', 'runtime', and 'vote_average'.
+-Return the columns ordered by original_title in ascending order.
+
+This question is adapted from a Scaler problem.
+
+Approach : 
+- Mention the required column in the SELECT clause . 
+- To filter using WHERE clause , we need to filter out partial match .
+- LIKE clause used to filter the partial match .
+- To filter out those records which contains keyword mentioned , for this , we have to do Lower of that column and checks that any keyword contains mentioned word or not.
+- LIKE "%word%".
+
+Solution : 
+
+SELECT original_title , director , genres , cast , budget , revenue, runtime ,vote_average
+FROM movies 
+WHERE LOWER(keywords) LIKE '%sport%' OR LOWER(keywords) LIKE '%sequel%' OR LOWER(keywords) LIKE '%suspense%'
+ORDER BY original_title;
