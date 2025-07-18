@@ -1,0 +1,20 @@
+Problem : 
+Write a query to transform and display the Full Name (first_name and last_name separated by space) of all employees where only the first letter of the Full Name is capital.
+
+Result:
+Return the result ordered by employee_number in ascending order.
+
+- This problem is inspired by Scaler 
+
+Approach : 
+- We use concat clause to concat two columns (first_name , last_name). 
+- for concatenating it into proper form , we have to first use substr clause to extract letter from to position to length from position .
+- SUBSTR( col_name, position , length from position).
+- Transform to upper and lower as it is required by sub- parting the word . 
+- Order by using position of col_name in select clause.
+
+Solution : 
+SELECT employee_number , CONCAT(UPPER(SUBSTR(first_name, 1, 1)), LOWER(SUBSTR(first_name, 2)), " ", LOWER(last_name)) AS "Full Name"
+FROM employees
+ORDER BY 1;
+
