@@ -1,0 +1,20 @@
+Problem : 
+Write a query to get all the details of all the employees from job_history except for the employee with ID 101.
+
+Derived from a Scaler exercise.
+
+Approach : 
+- To filter which should not be equal to , we use <> or !=.
+
+Solution : 
+
+SELECT *
+FROM job_history 
+WHERE employee_id <> 101
+ORDER BY employee_id, job_id ;
+
+Alternate Way : 
+SELECT *
+FROM job_history 
+WHERE employee_id != 101
+ORDER BY employee_id, job_id ;
