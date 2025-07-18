@@ -1,0 +1,41 @@
+Problem : 
+Write a SQL query to create a new column named "New_salary" within their "employees" table. This column will reflect the adjusted salary after applying a 20% raise to the current salary ("salary").
+
+Steps to calculate the salary increment:
+-- Multiply the current salary by the percentage of the increment.
+-- Divide the result by 100.
+-- Then add the result to the current salary.
+-- Name the column as 'New_Salary'
+-- Round off the 'New_salary'. Use Round() for this.
+
+Result:
+Return the columns emp_id, name, salary, and 'New_salary'.
+Order the output by the emp_id in ascending order.
+
+-- This is inspired by Scaler 
+
+Employees : 
+Sample Input :                                                   Sample Output : 
+|  emp_id | name      | salary |                                 |  emp_id | name      | salary | New_salary      
+| ------- | --------- | ------ |                                 | ------- | --------- | ------ | --------
+| 1       | Luis      | 6142   |                                 | 1       | Luis      | 6142   |  7370
+| 2       | Den       | 11259  |                                 | 2       | Den       | 11259  |  13511
+| 3       | Alexander | 5374   |                                 | 3       | Alexander | 5374   |  6449
+| 4       | Shelli    | 12572  |                                 | 4       | Shelli    | 12572  |  15086
+| 5       | Sigal     | 6897   |                                 | 5       | Sigal     | 6897   |  8276
+
+
+Approach : 
+- First we need all the column , so use * in select clause .
+- Along with all columns , required to add New salary with the increment of 20%, so that , find out the increment value by salary * 0.2 and then add it to the salary
+- Round salary becaz it is not in term of decimals .
+- Sort output by using Order by clause.
+
+
+Solution : 
+SELECT * , ROUND(salary + (salary * 0.2)) AS New_salary
+FROM employees 
+ORDER BY emp_id;
+
+
+
