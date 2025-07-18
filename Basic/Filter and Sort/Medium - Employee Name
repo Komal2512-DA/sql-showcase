@@ -1,0 +1,19 @@
+Problem : 
+Write a query to return a list of all employees with selected last names: King, Taylor, and Grant from the employee's table.
+
+Result:
+-Return all the fields.
+-Return the result ordered by employee_id in ascending order.
+
+This problem is based on a concept from Scaler.
+
+Approach :
+- To retrieve all the columns , use SELECT * . 
+- Filter using WHERE clause and there are more than 1 condition in the same column , so use IN clause .
+- Sort the output by mentioned column  .
+
+Solution : 
+SELECT * 
+FROM employees 
+WHERE Last_name IN ('King', 'Taylor', 'Grant')
+ORDER BY employee_id ;
