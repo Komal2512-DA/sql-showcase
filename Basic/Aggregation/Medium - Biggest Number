@@ -1,0 +1,26 @@
+Problem Statement:
+A single number is a number that appeared only once in the mynumbers table.
+
+In our data analysis, we are interested in identifying unique values within the mynumbers table. 
+Specifically, we need to determine the largest single number that appears only once in this table. 
+If no such unique value exists, the result should be null.
+
+Write a SQL query to perform the above-mentioned task.
+
+mynumbers : 8 8 3 3 1 4 5 6 , output : 6
+
+--Try this challenge influenced by Scaler’s problem sets.
+
+Approach : 
+- To find  out the max number whose count is equal to 1 , then group the num column and to filter the out the data which is not a part of table , use HAVING clause.
+- Use case when else end statement , for the scenario where count of num is not equal to 1 then output should be null else max of num .
+
+Solution : 
+
+SELECT CASE 
+          WHEN COUNT(num) != 1 THEN null 
+          ELSE MAX(num) 
+       END AS num
+FROM mynumbers 
+GROUP BY num
+HAVING COUNT(*) = 1;
