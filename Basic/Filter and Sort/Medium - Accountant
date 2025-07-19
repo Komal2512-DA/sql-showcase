@@ -1,0 +1,40 @@
+Problem : 
+The goal is to write a SQL query to create a new column named Accountant.
+If the employees are working in the 'FI_ACCOUNT' or 'AC_ACCOUNT' designation, label them as 1; otherwise, label all other designations as 0.
+
+- The result should include the columns employee_id, first_name, last_name, salary, and Accountant.
+- The result should be sorted employee_id in ascending order for easier reference.
+- Refer to the column job_id to get the details of the designation.
+
+employees 
+Sample Input :
+| employee_id  | first_name  | last_name  | email    | phone_number  | hire_date  | job_id      | salary | commission_pct  | manager_id  | department_id  |
+| ------------ | ----------- | ---------- | -------- | ------------- | ---------- | ----------- | ------ | --------------- | ----------- | -------------- |
+| 111          | Ismael      | Sciarra    | ISCIARRA | 515.124.4369  | 1997-09-30 | FI_ACCOUNT  | 7700   | NULL            | 108         | 100            |
+| 112          | Jose Manuel | Urman      | JMURMAN  | 515.124.4469  | 1998-03-07 | FI_ACCOUNT  | 7800   | NULL            | 108         | 100            |
+| 113          | Luis        | Popp       | LPOPP    | 515.124.4567  | 1999-12-07 | FI_ACCOUNT  | 6900   | NULL            | 108         | 100            |
+| 114          | Den         | Raphaely   | DRAPHEAL | 515.127.4561  | 1994-12-07 | PU_MAN      | 11000  | NULL            | 100         | 30             |
+| 115          | Alexander   | Khoo       | AKHOO    | 515.127.4562  | 1995-05-18 | PU_CLERK    | 3100   | NULL            | 114         | 30             |
+
+Sample Output : 
+| employee_id  | first_name  | last_name  | salary | Accountant |
+| ------------ | ----------- | ---------- | ------ | ---------- |
+| 111          | Ismael      | Sciarra    | 7700   | 1          |
+| 112          | Jose Manuel | Urman      | 7800   | 1          |
+| 113          | Luis        | Popp       | 6900   | 1          |
+| 114          | Den         | Raphaely   | 11000  | 0          |
+| 115          | Alexander   | Khoo       | 3100   | 0          |
+
+--Got the idea from a Scaler session. 
+
+Approach : 
+- Use IF clause to filter out on the basis of condition , if conditions meets True then return first one else last one . 
+- IF(condition , True, False).
+
+
+Solution : 
+SELECT employee_id , first_name , last_name , salary , 
+        IF(job_id IN ('FI_ACCOUNT', 'AC_ACCOUNT'), 1, 0) AS Accountant
+FROM employees 
+ORDER BY 1;
+
