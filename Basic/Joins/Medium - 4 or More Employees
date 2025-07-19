@@ -1,0 +1,40 @@
+Problem Statement:
+You need to write a SQL query to find the "full_name" (first_name and last_name, separated by space) of managers who oversee four or more employees.
+
+-The result should be ordered by full_name, lexicographically.
+-The column manager_id in the employees table represents the employee_id of the manager.
+
+employees 
+| Column Name     | Data Type    |
+| --------------- | ------------ |
+| employee_id     | INT          |
+| first_name      | VARCHAR(50)  |
+| last_name       | VARCHAR(50)  |
+| email           | VARCHAR(50)  |
+| phone_number    | VARCHAR(20)  |
+| hire_date       | DATE         |
+| job_id          | VARCHAR(20)  |
+| salary          | INT          |
+| commission_pct  | DECIMAL(5,2) |
+| manager_id      | INT          |
+| department_id   | INT          |
+
+-- Originally featured in Scaler’s curriculum.
+
+Approach : 
+- Manager is also an employee as well. 
+- To perform join in the same table to retrieve manager info , perform SELF JOIN. 
+- join on the basis of e's managerId to m's employeeId , so in the m table , there should be manager info .
+- retrieve manager first name and last name and concatenate them and then do group by and count how many rows they have . 
+- Filter if rows are greater than 4 or more. 
+- That means manager who oversee atleast 4 employees .
+
+Solution : 
+
+SELECT CONCAT(m.first_name , ' ', m.last_name) AS full_name
+FROM employees e 
+INNER JOIN employees m 
+ON e.manager_id = m.employee_id 
+GROUP BY full_name
+HAVING COUNT(*) >= 4
+ORDER BY 1;
