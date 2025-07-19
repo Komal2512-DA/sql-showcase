@@ -1,0 +1,42 @@
+Problem Statement:
+We define an employee's total earnings to be their monthly salary multiplied by the number of months worked (salary×months). 
+The maximum total earnings are the highest total earnings for any employee in the employee table.
+
+Write a SQL query to find:
+- The maximum total earnings (as earnings) for all employees.
+- The total number of employees (as num_employees) who have the maximum total earnings.
+
+employee
+Sample Input : 
+| employee_id  | name      | months | salary |
+| ------------ | --------- | ------ | ------ |
+| 96963        | Gregory   | 30     | 5071   |
+| 98271        | Christine | 3      | 3796   |
+| 98491        | Lillian   | 3      | 1920   |
+| 98493        | Nancy     | 22     | 4912   |
+| 98495        | Patricia  | 22     | 4912   |
+| 98497        | Angela    | 22     | 4912   |
+| 5962         | Earl      | 30     | 5071   |
+
+Sample Output : 
+| earnings  | num_employees      |
+| 152130    | 2                  |
+
+-- A Scaler-inspired twist to test your skills!
+
+Approach : 
+- First step is to filter the max of earnings (months * salary) and used as inner query in Where clause to filter out the max earning.
+- Retreive the details of earning and number of employees in SELECT clause. 
+- For this scenario, Group by earnings and Count the number of employees .
+
+Avoid : 
+- In WHERE clause , don't use alias , becaz to filter out info , that column should be a part of table , and alias are given as temporary name which is not a part of table.
+
+Solution : 
+
+SELECT months * salary AS earnings , COUNT(*) AS num_employees
+FROM employee
+WHERE months * salary = (
+            SELECT MAX(months * salary) AS max_salary
+            FROM employee)
+GROUP BY months * salary;
