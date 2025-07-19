@@ -1,0 +1,25 @@
+Problem Statement:
+Write a SQL query to find all the details of employees who earn the third-highest salary.
+
+- Return all the columns from the employees table.
+- Avoid using the LIMIT keyword in the query.
+
+-- This mirrors competitive questions used in Scaler mocks.
+
+Approach : 
+- Motive is to find out third highest salaried employee info without using LIMIT. 
+- First find out the max salary which is the first_max_salary as a inner query.
+- Inner most query return the max salary and filter out the salary which is less than that salary and retrieve the max salary of it . 
+- Repeat the process to find out which onee is the third highest salary . 
+- Once you get the third highest salary , use it as filter in WHERE clause to get the info of that employee which salary should be equal to the third highest salary. 
+
+Solution : 
+
+SELECT * 
+FROM employees
+WHERE salary = (SELECT MAX(salary) AS third_max
+                FROM employees
+                WHERE salary < (SELECT MAX(salary) AS sec_max
+                                FROM employees
+                                WHERE salary < (SELECT MAX(salary) AS first_max
+                                                FROM employees )));
