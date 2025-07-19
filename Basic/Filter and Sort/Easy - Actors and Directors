@@ -1,0 +1,30 @@
+Problem Statement:
+Write a query to generate a report that lists pairs of actor_id and director_id where the actor has collaborated with the director at least three times.
+The resultant table should be ordered by actor_id in ascending manner.
+
+actordirector
+Sample Input : 
+| actor_id  | director_id  | timestamp |
+| --------- | ------------ | --------- |
+| 1         | 1            | 0         |
+| 1         | 1            | 1         |
+| 1         | 1            | 2         |
+| 1         | 2            | 3         |
+| 1         | 2            | 4         |
+| 2         | 1            | 5         |
+| 2         | 1            | 6         |
+
+Sample Output : The only pair where the actor & director is collaborated exactly 3 times is (1, 1).
+- Inspired by Scaler.
+
+Approach :
+- First step is to Group by actor_id and director_id to find out the count of rows using HAVING clause which should be atleast 3 or greater than 3 . 
+- Filter using Having clause becaz count of row is not a part of table .
+- This query returns the combo of actor and director who generate reports as pairs atleast 3 times.
+
+Solution : 
+SELECT actor_id , director_id 
+FROM actordirector
+GROUP BY actor_id , director_id
+HAVING COUNT(*) >= 3 
+ORDER BY 1;
