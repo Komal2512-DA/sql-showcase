@@ -1,0 +1,40 @@
+Problem : 
+Here's what we need to find:
+
+--We are interested in employees working in the 'Administration', 'Marketing', and 'Human Resources' departments.
+--For each qualifying employee, we want to retrieve the employee_id, full_name (first and last name separated by space), and salary.
+--We want the final results to be ordered by employee_id in ascending order for easier reference.
+
+| Employees           | Type    |   | Departments           | Type    |
+| ------------------- | ------- | - | --------------------- | ------- |
+| employee_id         | INTEGER |   | department_id         | INTEGER |
+| first_name          | VARCHAR |   | department_name       | VARCHAR |
+| last_name           | VARCHAR |   | manager_id            | INTEGER |
+| email               | VARCHAR |   | location_id           | INTEGER |
+| phone_number        | VARCHAR |   |                       |         |
+| hire_date           | DATE    |   |                       |         |
+| job_id              | VARCHAR |   |                       |         |
+| salary              | DECIMAL |   |                       |         |
+| commission_pct      | DECIMAL |   |                       |         |
+| manager_id          | INTEGER |   |                       |         |
+| department_id       | INTEGER |   |                       |         |
+
+-- Modeled after a learning example from Scaler.
+
+Approach : 
+- We have the department id in employees table , so we dont know that which department id is assigned to which department.
+- For this scenario , Join two tables on the common column (department id).
+- Now afetr join , we have table where we have department name as well along with their id . 
+- Filter out more than 1 condition in same column (department names ) so we use IN keyword. 
+- Sort the output .
+
+Solution :
+
+SELECT e.employee_id , CONCAT(first_name , ' ', last_name) AS full_name , salary
+FROM employees e 
+JOIN departments d 
+ON e.department_id = d.department_id
+WHERE department_name IN ('Administration', 'Marketing',  'Human Resources') 
+ORDER BY e.employee_id;
+
+
