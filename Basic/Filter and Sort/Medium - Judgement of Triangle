@@ -1,0 +1,19 @@
+Problem Statement:
+Write a SQL query to report whether each triad of the three line segments in the given data can form a triangle or not.
+
+Note: The resultant table should be ordered by x, y and z respectively, in ascending order.
+-- This question is inspired from Scaler .
+
+Approach : 
+- We know sum of two should be greater than third one , replace it by every side , if one of them not satisfied , then it is not a trianlge.
+- Use CASE WHEN to meet conditions, if yes then return yes else no.
+- x + y > z AND y + z > x AND z + x > y, all should be true to be a triangle.
+
+Solution : 
+SELECT *, 
+    CASE 
+        WHEN x + y > z AND y + z > x AND z + x > y THEN 'Yes'
+        ELSE 'No' 
+    END AS triangle
+FROM triangle
+ORDER BY x , y , z;
