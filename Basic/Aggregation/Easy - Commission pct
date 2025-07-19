@@ -1,0 +1,19 @@
+Problem : 
+Write a SQL query that achieves the following:
+
+--For any employee with a missing commission rate (NULL in commission_pct), we want to set their commission rate to 0%.
+--We want to round all commission rates (including the newly set zeros) to two decimal places. This ensures a consistent format for all commission rates.
+--For employees with existing commission rates (not null), we want to keep their current rate but ensure it's rounded to two decimal places.
+--Once the updates are made, we want the data to be sorted by employee_id in ascending order for easier reference.
+
+This problem is inspired by Scaler .
+
+Approach : 
+- Retrieve employee id and commission percentage using SELECT clause.
+- Use IFNULL clause to replace null values with 0 and ROUND clause helps to round off values upto desired decimal value i.e. 2.
+- Sort the output on the basis of position in the SELECT clause .
+
+Solution : 
+SELECT employee_id , ROUND(IFNULL(commission_pct, 0), 2) AS commission_pct
+FROM employees 
+ORDER BY 1;
