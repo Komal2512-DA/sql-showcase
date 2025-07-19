@@ -1,0 +1,35 @@
+Problem : 
+We want to find all employees who are not present in the job_history table. This indicates they haven't held any jobs previously within the company.
+- The result should include all columns from the employees table.
+- The result should to be sorted by employee_id in ascending order for easier reference.
+Note:
+- To get the details of the employee's previous jobs refer to the job_history table.
+- An employee is present in the job_history table if he/she has worked before.
+
+|   employees   |              |             |                  |                |             |            |          |                  |              |                  | job_history   |              |              |              |                  |
+| ------------- | ------------ | ----------- | ---------------- | -------------- | ----------- | ---------- | -------- | ---------------- | ------------ | ---------------- | ------------- | ------------ | ------------ | ------------ | ---------------- |
+| employee_id   | first_name   | last_name   | email            | phone_number   | hire_date   | job_id     | salary   | commission_pct   | manager_id   | department_id    | employee_id   | start_date   | end_date     | job_id       | department_id    |
+| ------------- | ------------ | ----------- | -----------      | -------------- | ----------- | ---------- | -------- | ---------------- | ------------ | ---------------- | ------------- | ------------ | ------------ | ------------ | ---------------- |
+| 101           | Steven       | King        | SKING            | 515.123.4567   | 1987-06-17  | AD_PRES    | 25000    | NULL             | NULL         | 90               | 101           | 1989-09-21   | 1993-10-27   | AC_ACCOUNT   | 110              |
+| 102           | Neena        | Kochhar     | NKOCHHAR         | 515.123.4568   | 1989-09-21  | AD_VP      | 17000    | NULL             | 100          | 90               | 101           | 1993-10-28   | 1997-03-15   | AC_MGR       | 110              |
+| 103           | Lex          | De Haan     | LDEHAAN          | 515.123.4569   | 1993-01-13  | AD_VP      | 17000    | NULL             | 100          | 90               | 102           | 1993-01-13   | 1998-07-24   | IT_PROG      | 60               |
+| 104           | Alexander    | Hunold      | AHUNOLD          | 590.423.4567   | 1990-01-03  | IT_PROG    | 9000     | NULL             | 103          | 60               |               |              |              |              |                  |
+| 105           | Bruce        | Ernst       | BERNST           | 590.423.4568   | 1991-05-21  | IT_PROG    | 6000     | NULL             | 103          | 60               |               |              |              |              |                  |
+| 106           | David        | Austin      | DAUSTIN          | 590.423.4569   | 1997-06-25  | IT_PROG    | 4800     | NULL             | 103          | 60               |               |              |              |              |                  |
+--Only employess with id 101 and 102 have a job history.
+You’ll find a similar version on Scaler.
+
+Approach :
+- Do LEFT JOIN , because we have to retain the employee table (which is on the left) and when we perform left join , the employees who is not present in job_history will reflect as null value becaz they dont exist there means they dont have any prior job .
+- join using common column .
+- filter out where employees dont have prior job (means job history table have employee_id null).
+- sort on the basis of position in SELECT clause. 
+
+Solution : 
+
+SELECT e.*
+FROM employees e 
+LEFT JOIN job_history jh 
+USING (employee_id)
+WHERE jh.employee_id IS NULL
+ORDER BY 1;
