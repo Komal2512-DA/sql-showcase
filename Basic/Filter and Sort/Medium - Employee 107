@@ -1,0 +1,41 @@
+Problem Statement:
+We want to find all employees who share the same job as the employee with employee_id 107. Additionally, you need to create a new column "full_name" by concatenating first_name and last_name, separated by space.
+
+- The result should include the columns full_name, salary, department_id, and job_id.
+- The result should be sorted by full_name in ascending order for easier reference.
+
+employees 
+Sample Input :
+| employee_id  | first_name  | last_name  | email     | phone_number       | hire_date  | job_id    | salary | commission_pct  | manager_id  | department_id  |
+| ------------ | ----------- | ---------- | --------- | ------------------ | ---------- | --------- | ------ | --------------- | ----------- | -------------- |
+| 101          | Neena       | Kochhar    | NKOCHHAR  | 515.123.4568       | 1989-09-21 | AD_VP     | 17000  | NULL            | 100         | 90             |
+| 103          | Alexander   | Hunold     | AHUNOLD   | 590.423.4567       | 1990-01-03 | IT_PROG   | 9000   | NULL            | 102         | 60             |
+| 104          | Bruce       | Ernst      | BERNST    | 590.423.4568       | 1991-05-21 | IT_PROG   | 6000   | NULL            | 103         | 60             |
+| 105          | David       | Austin     | DAUSTIN   | 590.423.4569       | 1997-06-25 | IT_PROG   | 4800   | NULL            | 103         | 60             |
+| 107          | Diana       | Lorentz    | DLLORENTZ | 590.423.5567       | 1999-02-07 | IT_PROG   | 4200   | NULL            | 103         | 60             |
+| 115          | Alexander   | Khoo       | AKHOO     | 515.127.4562       | 1995-08-15 | PU_CLERK  | 3100   | NULL            | 114         | 30             |
+| 151          | David       | Bernstein  | DBERNSTE  | 011.44.1344.345268 | 1998-03-24 | SA_REP    | 9500   | 0.25            | 145         | 80             |
+| 165          | David       | Lee        | DLEE      | 011.44.1346.529268 | 2000-02-23 | SA_REP    | 6800   | 0.1             | 147         | 80             |
+
+Sample Output : 
+| full_name        | salary | department_id  | job_id   |
+| ---------------- | ------ | -------------- | -------- |
+| Alexander Hunold | 9000   | 60             | IT_PROG  |
+| Bruce Ernst      | 6000   | 60             | IT_PROG  |
+| David Austin     | 4800   | 60             | IT_PROG  |
+| Diana Lorentz    | 4200   | 60             | IT_PROG  |
+
+-- A same variation of a problem discussed in Scaler.
+
+Approach : 
+- We required full_name so use CONCAT keyword to combine strings as accordingly , and mentioned info in SELECT clause . 
+- filter only those job_id which employee 107 has . 
+- For this scenario , filter job id of employee_id 107 in innerquery and match that response with outer query that who has the same job  as emp 107 has .
+
+Solution : 
+SELECT CONCAT(first_name , ' ', last_name) AS full_name , salary , department_id , job_id
+FROM employees 
+WHERE job_id = (SELECT job_id 
+                FROM employees 
+                WHERE employee_id = 107 )
+ORDER BY 1;
