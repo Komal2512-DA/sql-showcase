@@ -1,0 +1,29 @@
+Problem Statement:
+Write a query to report the name and bonus amount of each employee who gets a bonus of less than 1000 and an employee who does not receive any bonus at all.
+
+Result:
+-Return the bonus as 'NULL' if an employee doesn’t get a bonus.
+-Return the columns 'name' and 'bonus'
+-Return the output ordered by the bonus in ascending order.
+-- I came across a similar problem on Scaler!
+
+| employee                  |                                                            |  bonus                  |     |
+| ------------------------- | --------------                                             | ----------------------- | --- |
+| `empId`                   | INT                                                        | `empId`                 | INT |
+| `name`                    | VARCHAR                                                    | `bonus`                 | INT |
+| `supervisor`              | INT (nullable) 
+| `salary`                  | INT            
+
+Approach : 
+- First we have to retain the emp table because whether an emp receive bonus or not , doesnt matter.
+- Keep employee on left and do left join .
+- filter where bonus less than 1000 and those emp whose bonus is null
+
+Solution : 
+
+SELECT name, bonus
+FROM employee e 
+LEFT JOIN bonus b 
+ON e.empId = b.empId
+WHERE bonus < 1000 or bonus IS NULL
+ORDER BY bonus;
