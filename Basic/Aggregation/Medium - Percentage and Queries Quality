@@ -1,0 +1,45 @@
+Problem Statement:
+Write a query to determine the quality and poor query percentage for each search query.
+
+- Query Quality: The average of the ratio between the query rating and its position.
+- Poor Query Percentage: The percentage of all queries with a rating less than 3.
+
+Note:
+- Both quality and poor_query_percentage should be rounded to 2 decimal places.
+- Return the result ordered by query_name, lexicographically.
+
+queries
+| Sample Input       |                  |          |        |                                     Sample Output             |         |                         |
+| ------------------ | ---------------- | -------- | ------ |                                     ------------------------- | ------- | ----------------------- |
+| query_name         | result           | position | rating | query\_name                           query_name              | quality | poor_query_percentage   |
+| Dog                | Golden Retriever | 1        | 5      | Cat                                   Cat                     | 0.66    | 33.33                   |
+| Dog                | German Shepherd  | 2        | 5      | Dog                                   Dog                     | 2.5     | 33.33                   |
+| Dog                | Mule             | 200      | 1      |                                                               |         |                         |
+| Cat                | Shirazi          | 5        | 2      |                                                               |         |                         |
+| Cat                | Siamese          | 3        | 3      |                                                               |         |                         |
+| Cat                | Sphynx           | 7        | 4      |                                                               |         |                         |
+
+
+Dog queries
+quality is ((5 / 1) + (5 / 2) + (1 / 200)) / 3 = 2.50
+poor_ query_percentage is (1 / 3) * 100 = 33.33
+Cat queries
+quality equals ((2 / 5) + (3 / 3) + (4 / 7)) / 3 = 0.66
+poor_ query_percentage is (1 / 3) * 100 = 33.33
+
+-- I came across a similar problem on Scaler!
+
+Approach : 
+- In the SELECT clause , we have to find out the quality and poor query percentage .
+- For quality , we have to find out first ratio by rating/position , then find out AVG of it after group by the data on query name.
+- For poor query percentage , we can't filter using WHERE clause because it will filter out for quality column as well which is not good for quality column.
+- For this scenario , we will use IF condition , where if rating is less than 3 , it return 1 else 0 and finds the average of it .
+- Round both columns effectively upto 2 decimal points.
+
+Solution : 
+
+SELECT query_name , ROUND(AVG(rating/position), 2) AS quality, 
+        ROUND(AVG(IF(rating < 3, 1, 0) ) * 100, 2) AS poor_query_percentage
+FROM queries 
+GROUP BY query_name
+ORDER BY query_name;
