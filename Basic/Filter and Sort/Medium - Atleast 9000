@@ -1,0 +1,42 @@
+Problem Statement:
+Write a SQl query to display the details of those departments where the salary of each employee in that department is at least 9000.
+
+- Return all the columns from the departments table.
+- Return the result ordered by department_id in ascending order.
+
+-- Got the idea from a Scaler session.
+
+Approach :
+- SELECT * retrieve all the info of department table .
+- Filter department ids which have employee whose min salary >= 9000 which means all the emp of that department have salary greater than 9000 if their min salary is 9000.
+- Using IN because there are multiple departments which have employee where all the emp have salary more than 9000.
+  So, any one of them exists will return that department.
+
+Alternate Approach : 
+- We have to find out the department whose all the emp have salary greater than 9000 .
+- For this scenrio , we will use NOT EXISTS .
+- Why NOT EXISTS ?? 
+  Because if we use EXISTS and return that department whose emp salary is greater than 9000 , then it will return that department in that whether an another employee
+  have salary less than 9000 and we are nt looking for consider only of 1 emp. So use NOT EXISTS which founds if any emp have salary less than 9000 , then will not return that department.
+- Co-relate the department to the inner query , so it will finds out for the same department which is outside.
+
+Solution : 
+
+SELECT *
+FROM departments 
+WHERE department_id IN (SELECT department_id
+                        FROM employees 
+                        GROUP BY department_id
+                        HAVING MIN(salary) >= 9000)
+ORDER BY 1;
+
+Alternate Way : 
+
+SELECT d.*
+FROM departments d 
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM employees e 
+    WHERE e.department_id = d.department_id AND e.salary < 9000
+) AND d.manager_id IS NOT NULL
+ORDER BY d.department_id;
