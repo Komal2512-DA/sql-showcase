@@ -1,0 +1,51 @@
+Problem Statement:
+Write a query to display the details of the employees who belong to the 'Europe' region.
+
+Result:
+-Return the columns 'employee_id', 'full_name' (first_name and last_name separated by space), 'salary', 'phone_number', 'department_id', 'department_name', 'street_address', 'city', 'country_name', 'region_id', 'region_name'.
+-Return the result ordered by salary in descending order and by employee_id in ascending order.
+-- A Scaler-inspired twist to test your skills!
+
+| **employees Table **       |         | **departments Table        ** |         |
+| -------------------------- | ------- | ----------------------------- | ------- |
+| employee\_id               | INT     | department\_id                | INT     |
+| first\_name                | VARCHAR | department\_name              | VARCHAR |
+| last\_name                 | VARCHAR | manager\_id                   | INT     |
+| email                      | VARCHAR | location\_id                  | INT     |
+| phone\_number              | VARCHAR |                               |         |
+| hire\_date                 | DATE    |                               |         |
+| job\_id                    | VARCHAR |                               |         |
+| salary                     | INT     |                               |         |
+| commission\_pct            | DECIMAL |                               |         |
+| manager\_id                | INT     |                               |         |
+| department\_id             | INT     |                               |         |
+
+| **locations **       |         | **countries **         |         | **regions **        |         |
+| -------------------- | ------- | ---------------------- | ------- | ------------------- | ------- |
+| location\_id         | INT     | country\_id            | VARCHAR | region\_id          | INT     |
+| street\_address      | VARCHAR | country\_name          | VARCHAR | region\_name        | VARCHAR |
+| postal\_code         | VARCHAR | region\_id             | INT     |                     |         |
+| city                 | VARCHAR |                        |         |                     |         |
+| state\_province      | VARCHAR |                        |         |                     |         |
+| country\_id          | VARCHAR |                        |         |                     |         |
+
+Approach : 
+-retrieves data from multiple tables using join operations and applies a filter to select only employees located in the ‘Europe’ region.
+-The result set is ordered by salary in descending order and then by employee ID in ascending order.
+
+Solution :
+
+SELECT e.employee_id , CONCAT(e.first_name , ' ', e.last_name ) AS full_name , e.salary , e.phone_number, 
+    d.department_id, d.department_name , l.street_address, l.city, c.country_name , r.region_id , r.region_name 
+FROM employees e 
+INNER JOIN departments  d
+ON e.department_id = d.department_id
+INNER JOIN locations l 
+ON l.location_id = d.location_id
+INNER JOIN countries c 
+ON c.country_id = l.country_id
+INNER JOIN regions r 
+ON r.region_id = c.region_id
+WHERE r.region_name = 'Europe'
+ORDER BY salary DESC , e.employee_id;
+
