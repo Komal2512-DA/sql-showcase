@@ -1,0 +1,38 @@
+Problem Description:
+Given a list of candidates and their skills, write a SQL query to find the candidates who possess all three required skills for the Data Science position.
+Specifically, you are looking for candidates who are proficient in 'Python', 'Tableau', and 'MySQL'.
+
+-Note that there are no duplicates in the candidates table.
+-Return the result ordered by candidate_id in ascending order.
+
+candidates 
+| candidate_id  | skill   |
+| ------------- | ------- |
+| 100           | Python  |
+| 100           | Tableau |
+| 100           | MySQL   |
+| 101           | R       |
+| 101           | Tableau |
+| 101           | Java    |
+| 102           | PowerBi |
+| 102           | MySQL   |
+
+Output : Candidate 100 is displayed because he/she possesses all three required skills: Python, Tableau, and MySQL. Candidates 101 and 102 are not included in the output because they are missing one or more of the required skills.
+-- This problem is inspired by Scaler
+
+Approach : 
+- To find out candidates whose skills are 3 , we have to group by and filter on the count of candidate.
+- Then filter skills which should be specified skills mentioned in the ques in WHERE clause .
+- WHY WHERE clause ?
+  to filter on the column which was present in the table.
+- WHY HAVING clause on count of skills ?
+  to filter on the column which is not a part of table .
+
+Solution : 
+
+SELECT DISTINCT candidate_id 
+FROM candidates
+WHERE skill IN ("Python", "Tableau", "MySQL")
+GROUP BY candidate_id
+HAVING COUNT(skill) = 3
+ORDER BY candidate_id;
