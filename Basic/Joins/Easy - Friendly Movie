@@ -1,0 +1,31 @@
+Problem Statement:
+Write a SQL query to report the unique titles of the kid-friendly movies streamed in June 2020.
+
+Result:
+- Use the given Content and TVProgram tables.
+- Return the column title
+- Return the result table ordered by title in ascending order.
+
+| Content                  |         |                                                      | TVProgram                   |          |
+| ------------------------ | ------- |                                                      | --------------------------- | -------- |
+| `content_id`             | INT     |                                                      | `program_date`              | DATETIME |
+| `title`                  | VARCHAR |                                                      | `content_id`                | INT      |
+| `Kids_content`           | CHAR(1) |                                                      | `channel`                   | VARCHAR  |
+| `content_type`           | VARCHAR |                                              
+
+-- I came across a similar problem on Scaler!
+
+Approach : 
+- There are three filters on which i have to focus 
+  first , it should be kids_content , program date should be of June 2020 and content type should be movies
+- First step is to do inner join then filter on such scenarios , and retrieve the kids friendly movies title .
+
+Solution : 
+
+SELECT DISTINCT title
+FROM Content c
+INNER JOIN TVProgram tv 
+ON c.content_id = tv.content_id 
+WHERE Kids_content = 'Y' AND content_type = 'Movies' and
+     date_format(program_date, "%Y-%m-%d") BETWEEN '2020-06-01' AND '2020-06-30' 
+ORDER BY 1;
