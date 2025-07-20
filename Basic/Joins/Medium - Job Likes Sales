@@ -1,0 +1,55 @@
+Problem Statement:
+-Display the details of the employees who had job titles like 'sales' in the past and the min_salary is greater than or equal to 6000.
+
+Result:
+-Return the columns 'employee_id', 'department_name', 'job_id', 'job_title', and 'min_salary'.
+-Return the employee's current information for the columns 'employee_id', and 'department_name'.
+-Return the employee's past information for the columns 'job_id', 'job_title', and 'min_salary'.
+-Return the output ordered by employee_id and min_salary in ascending order.
+-- This follows the thought process encouraged by Scaler.
+
+| **employees  **            |         | **departments  **             |                  |         |
+| -------------------------- | ------- | ----------------------------- | ---------------- | ------- |
+| employee\_id               | INT     |                               | department\_id   | INT     |
+| first\_name                | VARCHAR |                               | department\_name | VARCHAR |
+| last\_name                 | VARCHAR |                               | manager\_id      | INT     |
+| email                      | VARCHAR |                               | location\_id     | INT     |
+| phone\_number              | VARCHAR |                               |                  |         |
+| hire\_date                 | DATE    |                               |                  |         |
+| job\_id                    | VARCHAR |                               |                  |         |
+| salary                     | INT     |                               |                  |         |
+| commission                 | DECIMAL |                               |                  |         |
+| manager\_id                | INT     |                               |                  |         |
+| department\_id             | INT     |                               |                  |         |
+
+| **job\_history  **            |         | **jobs  **             |             |         |
+| ----------------------------- | ------- | ---------------------- | ----------- | ------- |
+| employee\_id                  | INT     |                        | job\_id     | VARCHAR |
+| start\_date                   | DATE    |                        | job\_title  | VARCHAR |
+| end\_date                     | DATE    |                        | min\_salary | INT     |
+| job\_id                       | VARCHAR |                        | max\_salary | INT     |
+| department\_id                | INT     |                        |             |         |
+
+
+Approach : 
+- Join employee table with department to get the emp-dep info .
+- JOIN employee table with job_history on commom key i.e. emp_id to get the info of emp and their past job histories .
+- JOIN job table with job history to get the info of job titles and their min salary.
+- Filter job title using LIKE clause to partia match of jobs where emp have any past job related to sales and min salary should be greater than 6000. 
+- Retrieve the req info of emp who have past job related to sales and min salary  6k .
+
+
+Solution : 
+
+SELECT  e.employee_id, d.department_name , jh.job_id, j.job_title , j.min_salary 
+FROM employees e 
+JOIN departments d 
+ON e.department_id = d.department_id
+JOIN job_history jh 
+ON jh.employee_id = e.employee_id
+JOIN jobs j 
+ON j.job_id = jh.job_id
+WHERE LOWER(j.job_title ) LIKE '%sales%' AND min_salary >= 6000
+ORDER BY e.employee_id, min_salary;
+
+
