@@ -1,0 +1,20 @@
+Problem Statement:
+Write a query to find all departments and respective employee's details, including those departments even if there are no employees assigned to them.
+
+Result:
+-Return the columns 'employee_id', 'first_name', 'last_name', 'department_name', and 'department_id' of the employees belonging to that department.
+-Return the output ordered by employee_id, department_id, and first_name in ascending order.
+
+-- I came across a similar problem on Scaler!
+
+Approach : 
+- We have to retain department table whether an emp assigned to that dep or not .
+- for this , keep dep on right and perform right join on it .
+
+Solution : 
+
+SELECT e.employee_id , e.first_name , e.last_name , d.department_id  ,d.department_name 
+FROM employees  e 
+RIGHT JOIN departments d 
+ON e.department_id = d.department_id
+ORDER BY e.employee_id, d.department_id, e.first_name;
