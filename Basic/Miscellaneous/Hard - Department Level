@@ -1,0 +1,33 @@
+Problem Statement:
+Write a query to tag each department according to the count of employees working in that department.
+
+- If the number of employees is 1, then tag the department as "Junior Department".
+- If the number of employees is 2 to 4, then tag the department as "Intermediate Department".
+- If the number of employees is greater than 4, then tag the department as "Senior Department".
+Name this column "Department_level".
+
+- Order the output by 'No_of_employees' and 'Department' in ascending order.
+- The result should include the columns 'Department', 'No_of_employees', and 'Department_level'.
+
+-- I came across a similar problem on Scaler!
+
+Approach : 
+- First find out the count of employees in each department using GROUP BY and AGGREGATION on it . 
+- Keep above logic as inner query and from this , find out the department level based on the no of employee using CASE WHEN ...statement because conditions are more than 2.
+- Why keep inner query ? 
+  Because we can't perform the case when statement on the aggregated column , so we have to first keep that column as part of table .
+- Then sort on the basis of position present in the SELECT clause.
+
+
+Solution : 
+
+SELECT * , CASE 
+            WHEN No_of_employees = 1 THEN "Junior Department"
+            WHEN No_of_employees BETWEEN 2 AND 4 THEN "Intermediate Department"
+            ELSE "Senior Department" 
+           END AS Department_level
+FROM
+(SELECT department_id AS Department, COUNT(employee_id) AS No_of_employees
+FROM employees 
+GROUP BY department_id) x 
+ORDER BY 2 , 1;
