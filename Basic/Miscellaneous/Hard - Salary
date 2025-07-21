@@ -1,0 +1,25 @@
+Problem Statement:
+Write a query to display the employee's full name (first name and last name separated by space) as 'full_name' of all those employees whose salary is greater than 40% of their department’s total salary or employees who don't belong to any department.
+
+Result:
+-Return the column 'full_name'.
+-Return the output ordered by full_name in ascending order.
+-- This mirrors competitive questions used in Scaler mocks.
+
+Approach : 
+-You're selecting first_name + last_name as full_name from employees table.
+-subquery Joins employees and departments on department_id. Filters to only include employees from the same department as the current employee in the outer query (e1.department_id).
+-Computes the sum of salaries in that department. Then multiplies that sum by 0.4 to get 40% of total salary for the department.
+-If salary > 40% of department total → include. Also include employees with NULL department.
+
+Solution : 
+
+SELECT CONCAT(first_name , ' ', last_name) AS full_name
+FROM employees e1
+WHERE salary > (SELECT 0.4*SUM(salary)
+                FROM employees e 
+                JOIN departments d 
+                ON e.department_id = d.department_id
+                WHERE d.department_id = e1.department_id
+                GROUP BY e.department_id) OR department_id IS NULL
+ORDER BY 1;
