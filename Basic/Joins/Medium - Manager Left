@@ -1,0 +1,36 @@
+Problem Statement:
+Write a query to find the employee_id of the employees whose salary is strictly less than $15000 and whose manager left the company.
+When a manager leaves the company, their information is deleted from the employees table, but the reporters still have their manager_id set to the manager that left.
+
+Result:
+-Return the column 'employee_id'
+-Return the result ordered by employee_id in ascending order.
+-- Try this challenge influenced by Scaler’s problem sets.
+
+employees
+| employee_id  | name      | manager_id  | salary |
+| ------------ | --------- | ----------- | ------ |
+| 1            | Luis      | 2           | 14384  |
+| 2            | Den       | NULL        | 12208  |
+| 3            | Alexander | NULL        | 9970   |
+| 4            | Shelli    | 3           | 6943   |
+| 5            | Sigal     | 6           | 5564   |
+| 7            | Guy       | 6           | 8120   |
+
+
+Approach : 
+- Self Join action will be performed because relationship exist in the same table between emp and mgr. 
+- Retain employee table to make sure all the manager who left as well can be retained to compare with another table .
+- Filter where emp has less than 15k and filter where manager has left the company . 
+- For the above scenario , we will check a mgr is not present in the mgr table and and presents in the emp table .
+- Then retrieve the info of emp of that particular emp after filtering .
+- Sort the output.
+
+Solution : 
+
+SELECT e.employee_id
+FROM employees e 
+LEFT JOIN employees m 
+ON e.manager_id = m.employee_id
+WHERE e.salary < 15000 AND e.manager_id IS NOT NULL AND m.employee_id IS NULL
+ORDER BY 1 ;
