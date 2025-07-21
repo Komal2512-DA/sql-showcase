@@ -1,0 +1,39 @@
+Problem Statement:
+Write a query to report the names of all the salespersons who did not have any orders related to the company named "RED".
+
+Result:
+Return the result table with the column 'name' and order it in ascending order.
+-- A Scaler-inspired twist to test your skills!
+
+| Salesperson                                                Orders                                                               Company            
+|------------------------------                               --------------------------------                                     --------------------------
+| sales_id | name | salary | com_rate | hire_date           |  order_id | order_date | com_id | sales_id | amount                 | com_id | name   | city      |
+|----------|------|--------|----------|------------         |----------|-------------|--------|----------|--------                |--------|--------|-----------|
+|    1     | John | 100000 |    6     | 2006-04-01          |     1    | 2014-01-01  |   3    |    4     | 10000                  |   1    | RED    | Boston    |
+|    2     | Amy  | 12000  |    5     | 2010-05-01          |     2    | 2014-02-01  |   4    |    5     |  5000                  |   2    | ORANGE | New York  |
+|    3     | Mark | 65000  |   12     | 2008-12-25          |     3    | 2014-03-01  |   1    |    1     | 50000                  |   3    | YELLOW | Boston    |
+|    4     | Pam  | 25000  |   25     | 2005-01-01          |     4    | 2014-04-01  |   1    |    4     | 25000                  |   4    | GREEN  | Austin    |
+|    5     | Alex | 5000   |   10     | 2007-02-03         
+
+Ouptut : 
+According to orders 3 and 4 in the orders table, it is easy to tell that only salespersons John and Pam have sales to company RED,
+so we report all the other names in the table salesperson. Other names are : Alex , Amy , Mark
+
+Approach : 
+- SELECT DISTINCT s.name: You're selecting unique names from the salesperson table.
+- FROM salesperson s: This is your main table.
+- WHERE NOT EXISTS (…): This subquery checks for non-existence of certain conditions.
+- SELECT 1 FROM orders o1 JOIN company c1 ON o1.com_id = c1.com_id …): This subquery joins orders and company tables.
+- WHERE c1.name = 'RED' AND o1.sales_id = s.sales_id: This checks if the salesperson has any orders with RED.
+- ORDER BY 1: This sorts the results alphabetically by name.
+
+Solution : 
+
+SELECT DISTINCT s.name
+FROM salesperson s 
+WHERE NOT EXISTS (SELECT 1 
+                  FROM orders o1 
+                  JOIN company c1 
+                  ON o1.com_id = c1.com_id
+                  WHERE c1.name = 'RED' AND o1.sales_id = s.sales_id)
+ORDER BY 1;
