@@ -1,0 +1,24 @@
+Problem Statement:
+Write a query to find the shortest distance between any two points from the points table.
+The distance should be calculated using the Euclidean distance formula and rounded to two decimal points. Save the result in a new column named 'shortest'.
+Result:
+Return the column shortest which contains the shortest distance between any two points, rounded to two decimal points.
+-- Inspired by questions seen in Scaler interviews.
+
+points 
+| x | INT|
+| y | INT|
+
+Approach : 
+- Inner query will return the possible combinations of x and y where either x should be equal to x or y should not be equal to y .
+- From this scenario , we know the formula of Euclidean Distance sqrt(power^2(x2-x1) + power^2(y2-y1)).
+- Apply this formula and find out the min of them .
+
+Solution :
+
+SELECT MIN(ROUND(SQRT(POW((x2-x1), 2) + POW((y2-y1), 2)), 2)) AS shortest
+FROM
+(SELECT p1.x AS x1 , p1.y AS y1, p2.x AS x2, p2.y AS y2
+FROM points p1 
+JOIN points p2 
+ON p1.x != p2.x OR p1.y != p2.y) s;
