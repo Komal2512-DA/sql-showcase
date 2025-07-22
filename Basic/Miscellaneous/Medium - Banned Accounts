@@ -1,0 +1,44 @@
+Problem Statement:
+Write a query to find the accounts that should be banned from Leetflex. An account should be banned if it was logged in at some moment from two different IP addresses.
+
+Result:
+Return the column account_id as an output and ordered it by account_id in ascending order.
+-- Modeled after a learning example from Scaler.
+
+loginfo 
+| **account_id**  | **ip_address**  | **login**           | **logout**          |
+| --------------- | --------------- | ------------------- | ------------------- |
+| 1               | 1               | 2021-02-01 09:00:00 | 2021-02-01 09:30:00 |
+| 1               | 2               | 2021-02-01 08:00:00 | 2021-02-01 11:30:00 |
+| 2               | 6               | 2021-02-01 20:30:00 | 2021-02-01 22:00:00 |
+| 2               | 7               | 2021-02-02 20:30:00 | 2021-02-02 22:00:00 |
+| 3               | 9               | 2021-02-01 16:00:00 | 2021-02-01 16:59:59 |
+| 3               | 13              | 2021-02-01 17:00:00 | 2021-02-01 17:59:59 |
+| 4               | 10              | 2021-02-01 16:00:00 | 2021-02-01 17:00:00 |
+| 4               | 11              | 2021-02-01 17:00:00 | 2021-02-01 17:59:59 |
+
+Approach : 
+- Select the column account_id from the loginfo table.
+- To find the banned accounts, since there is only one table we use self-join and join the loginfo table with different aliases.
+- We join the tables using the columns account_id and ip_address where the account_id's have to be the same and the ip_address should not be the same.
+- In the where clause, the login timestamp of L1 should be between the login and logout time stamps of L2.( i.e, this will filter the records of the accounts if there are active at some moment from two different IP addresses.)
+- Now, to filter the duplicated records we use the distinct keyword for the account_id column.
+- Use the order by clause to order the output based on the account_id column in ascending order.
+
+
+Solution : 
+SELECT DISTINCT L1.account_id
+FROM loginfo L1
+JOIN loginfo L2
+ON L1.account_id = L2.account_id 
+AND L1.ip_address <> L2.ip_address 
+WHERE (L1.login BETWEEN L2.login AND L2.logout)
+ORDER BY L1.account_id;
+
+Alternate   Way : 
+SELECT DISTINCT l1.account_id
+FROM loginfo l1 
+INNER JOIN loginfo l2 
+ON l1.account_id = l2.account_id AND l1.ip_address != l2.ip_address
+WHERE l1.login <l2.logout AND l2.login < l1.logout
+ORDER BY 1;
