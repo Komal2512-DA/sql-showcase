@@ -1,0 +1,39 @@
+Problem Statement:
+Write a query that reports all the possible matches of the league.
+
+Result:
+-Note that every two teams play two matches with each other, with one team being the home_team once and the other time being the away_team.
+-Return the result table ordered by home_team and away_team in an ascending manner.
+-- Derived from a Scaler exercise.
+
+teams 
+Sample Input                 Sample Output 
+| **       team_name**  |   | **         home_team** | **away_team**  |
+| --------------------- | - | ---------------------- | -------------- |
+| Arsenal               |   | Arsenal                | AS Monaco      |
+| AS Monaco             |   | Arsenal                | Benfica        |
+| Benfica               |   | Arsenal                | Chelsea        |
+| Chelsea               |   | AS Monaco              | Arsenal        |
+|                       |   | AS Monaco              | Benfica        |
+|                       |   | AS Monaco              | Chelsea        |
+|                       |   | Benfica                | Arsenal        |
+|                       |   | Benfica                | AS Monaco      |
+|                       |   | Benfica                | Chelsea        |
+|                       |   | Chelsea                | Arsenal        |
+|                       |   | Chelsea                | AS Monaco      |
+|                       |   | Chelsea                | Benfica        |
+
+Approach : 
+-h.team_name AS home_team: This column represents the team name of the home team.
+-a.team_name AS away_team: This column represents the team name of the away team.
+-FROM teams AS h: This clause specifies the first table we want to retrieve data from, which is the teams table. It is given the alias “h” to represent the home team.
+-CROSS JOIN teams AS a: This clause performs a cross join operation between the teams table and itself. 
+-WHERE h.team_name != a.team_name: This clause specifies the condition that filters the rows. It selects only those rows where the team name of the home team is not equal to the team name of the away team. This ensures that we get distinct combinations of home and away teams.
+-ORDER BY home_team, away_team: This clause specifies the sorting order of the result set. 
+
+Solution : 
+SELECT t1.team_name AS home_team , t2.team_name AS away_team
+FROM teams  t1
+JOIN teams t2
+WHERE t1.team_name != t2.team_name
+ORDER BY home_team , away_team;
