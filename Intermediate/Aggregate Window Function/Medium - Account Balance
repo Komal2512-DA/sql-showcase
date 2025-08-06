@@ -1,0 +1,30 @@
+Problem Statement:
+Write a query to report the balance of each user after each transaction. You may assume that the balance of each account before any transaction is 0 and that the balance will never be below 0 at any moment.
+
+Result:
+-Return the columns 'account_id', 'day', and 'balance'.
+-Return the result table in ascending order by account_id, then by day in case of a tie.
+-- This follows the thought process encouraged by Scaler.
+transactions                                                              Output : 
+account_id | day        | type     | amount                               account_id | day        | balance
+-----------|------------|----------|--------                              -----------|------------|--------
+1          | 2021-11-07 | Deposit  | 2000                                 1          | 2021-11-07 | 2000
+1          | 2021-11-09 | Withdraw | 1000                                 1          | 2021-11-09 | 1000
+1          | 2021-11-11 | Deposit  | 3000                                 1          | 2021-11-11 | 4000
+2          | 2021-12-07 | Deposit  | 7000                                 2          | 2021-12-07 | 7000
+2          | 2021-12-12 | Withdraw | 7000                                 2          | 2021-12-12 | 0
+
+Approach : 
+- SELECT clause let you to select the required column in the result.
+- Uses a CASE statement to check if the “type” column value is ‘Deposit’. If it is, it adds the corresponding “amount” value to the sum; otherwise, it subtracts the “amount” value. 
+  The SUM() function is used to calculate the sum of these values.
+- Applies a window function to calculate the running balance over a specific window of rows.
+- The PARTITION BY clause partitions the data by “account_id”. Within each partition, the rows are ordered by “day” in ascending order (order by day asc). The calculated running balance is assigned to the column alias “balance”.
+- The result set will be sorted first by “account_id” and then within each account, the transactions will be sorted by “day”.
+
+Solution : 
+
+SELECT account_id , day , 
+    SUM(CASE WHEN type = 'Deposit' THEN amount ELSE -amount END ) OVER (PARTITION BY account_id ORDER BY day) AS balance
+FROM transactions 
+ORDER BY account_id, day;
