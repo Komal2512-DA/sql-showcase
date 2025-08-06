@@ -1,0 +1,22 @@
+Problem Statement:
+Write a query to display the details of the employees who have the 5th highest salary in each job category.
+
+Result:
+-Return the columns 'employee_id', 'first_name', and 'job_id'.
+-Return the result ordered by employee_id in ascending order.
+-- This follows the thought process encouraged by Scaler.
+
+Approach :
+- Select the columns employee_id, first_name, and job_id from the employee’s table.
+- Use the dense_rank() window function to extract employee details who has the fifth-highest salary. In the over() clause use the partition by on the job_id column and order by on the salary column in descending order.
+- In the outer query print the employee details (i.e,employee_id,first_name, job_id) and filter the records using the where clause on whose salary rank is 5.
+- Use the order by clause to order the data by employee_id in ascending order.
+
+Solution : 
+
+SELECT employee_id, first_name, job_id
+FROM 
+(SELECT employee_id , first_name , job_id , DENSE_RANK() OVER (PARTITION BY job_id ORDER BY salary DESC) AS drnk
+FROM employees) x
+WHERE drnk = 5 
+ORDER BY 1; 
