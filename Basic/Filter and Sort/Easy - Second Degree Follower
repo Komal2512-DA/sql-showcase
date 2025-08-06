@@ -1,0 +1,47 @@
+Problem : 
+A second-degree follower is a user who:
+-follows at least one user, and
+-is followed by at least one user.
+Write a query to report the second-degree users and the number of their followers. Return the result table ordered by follower in alphabetical order.
+-- Got the idea from a Scaler session.
+
+follow
+Sample Input                                                 Sample Output
+| followee | follower |                                      | follower (output) | num |
+| -------- | -------- |                                      | ----------------- | --- |
+| Alice    | Bob      |                                      | Bob               | 2   |
+| Bob      | Cena     |                                      | Donald            | 1   |
+| Bob      | Donald   |                
+| Donald   | Edward   |           
+
+Approach : 
+- This is the SELECT statement that retrieves the “follower” column from the “follow” table as “f1.follower”.
+- It also calculates the distinct count of followers from the “follow” table using the “f2.follower” column, and assigns the count an alias “num”.
+- This is the INNER JOIN clause that joins the “follow” table with itself based on the condition that the “follower” in the first instance matches the “followee” in the second instance. 
+  This allows us to match followers with their corresponding followees.
+- This clause groups the rows in the result set based on the values of the “follower” column in “f1”. This means that all rows with the same “follower” will be treated as a single group.
+- This is the ORDER BY clause, which is used to sort the result set based on the “follower” column in ascending order.
+
+Solution : 
+
+SELECT f1.follower, COUNT(DISTINCT f2.follower) AS num 
+FROM follow f1 
+JOIN follow f2
+ON f1.follower = f2.followee
+GROUP BY 1
+ORDER BY 1;
+
+Alternate Way : 
+
+SELECT followee AS follower , COUNT(follower) AS num
+FROM follow 
+WHERE followee IN  (
+    SELECT follower 
+    FROM follow
+ ) AND 
+followee IN  (
+    SELECT followee 
+    FROM follow
+ )
+GROUP BY followee
+ORDER BY follower;
