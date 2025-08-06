@@ -1,0 +1,83 @@
+Problem Statement:
+-An imbalanced order is one whose maximum quantity is strictly greater than the maximum average quantity of every order (including itself).
+-The average quantity of an order is calculated as (total quantity of all products in the order) / (number of different products in the order).
+-The maximum quantity of an order is the highest quantity of any single product in the order.
+Write a query to find order_id of all imbalanced orders
+Result:
+-Return the column order_id.
+-Return the result table ordered by order_id in ascending order.
+-- Styled after typical problems used in Scaler bootcamps.
+
+ordersdetails                                               Output : 
+order_id | product_id | quantity                            order_id
+---------|------------|---------                            --------
+1        | 1          | 12                                  1
+1        | 2          | 10                                  3
+1        | 3          | 15                                  
+2        | 1          | 8                                   
+2        | 4          | 4                                   
+2        | 5          | 6                                   
+3        | 3          | 5                                   
+3        | 4          | 18                                  
+4        | 5          | 2                                   
+4        | 6          | 8                                   
+5        | 7          | 9                                   
+5        | 8          | 9                                   
+3        | 9          | 20                                  
+2        | 9          | 4  
+
+Explaination : 
+The average quantity of each order is:
+--order_id=1: (12+10+15)/3 = 12.3333333
+--order_id=2: (8+4+6+4)/4 = 5.5
+--order_id=3: (5+18+20)/3 = 14.333333
+--order_id=4: (2+8)/2 = 5
+--order_id=5: (9+9)/2 = 9
+The maximum quantity of each order is:
+--order_id=1: max(12, 10, 15) = 15
+--order_id=2: max(8, 4, 6, 4) = 8
+--order_id=3: max(5, 18, 20) = 20
+--order_id=4: max(2, 8) = 8
+--order_id=5: max(9, 9) = 9
+Orders 1 and 3 are imbalanced because they have a maximum quantity that exceeds the maximum average quantity of every order.
+
+Approach : 
+- For each order, it computes the average quantity by dividing total quantity by number of items.
+- Wraps the averages computed above in a subquery alias y.
+- Selects the maximum average quantity (max_avg_qty) across all orders.
+- Uses a window function with PARTITION BY order_id to compute the maximum quantity (max_qty) for each order.
+- Filters the previous result (x) by comparing each max_qty to the overall max_avg_qty computed earlier.
+- Keeps only order_ids where max_qty is strictly greater than max_avg_qty.
+- Uses DISTINCT to ensure each order_id appears only once.
+
+Solution : 
+SELECT order_id
+FROM 
+(SELECT order_id , MAX(quantity) AS max_qty
+FROM ordersdetails 
+GROUP BY order_id
+HAVING max_qty
+>
+(SELECT MAX(avg_qty)
+FROM (
+SELECT order_id,  AVG(quantity) AS avg_qty
+FROM ordersdetails 
+GROUP BY order_id) X )) y
+ORDER BY order_id;
+
+Alternate : 
+
+SELECT DISTINCT order_id
+FROM 
+(SELECT order_id, MAX(quantity) OVER (PARTITION BY order_id) AS max_qty
+FROM ordersdetails) x 
+WHERE max_qty > (
+    SELECT MAX(avg_quantity) AS max_avg_qty
+    FROM 
+    (SELECT order_id,  SUM(quantity)/COUNT(order_id) AS avg_quantity
+    FROM ordersdetails 
+    GROUP BY order_id) y 
+)
+ORDER BY order_id;
+
+
