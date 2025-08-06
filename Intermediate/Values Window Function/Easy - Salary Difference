@@ -1,0 +1,22 @@
+Problem Statement:
+Write a query to display each employee's salary and the difference from the next higher salary in increasing order.
+
+Result:
+-Return the columns employee_id, salary, next_higher_salary and salary_difference.
+-Return the output ordered by salary and salary_difference in ascending order.
+-- Picked this one up from Scaler’s learning platform.
+
+Approach : 
+- Next Higher Salary calculated using the LEAD() window function, which retrieves the value from the next row based on the specified ordering (in this case, the ascending order of salary).
+- Use it as subquery x . 
+- The query will retrieve the employee_id, salary, next_higher_salary, and salary_difference columns.
+- Salary difference is the difference between the next higher salary and the current employee’s salary.
+- Order clause will first sort the result set by the salary column in ascending order, and within each salary, it will further sort by the salary_difference column in ascending order.
+
+Solution : 
+
+SELECT employee_id , salary , next_higher_salary, (next_higher_salary - salary) AS salary_difference
+FROM 
+(SELECT * , LEAD(salary, 1) OVER (ORDER BY salary) AS next_higher_salary
+FROM employees ) x 
+ORDER BY salary, salary_difference;
