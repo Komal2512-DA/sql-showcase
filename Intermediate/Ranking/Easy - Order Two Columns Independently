@@ -1,0 +1,32 @@
+Problem Statement:
+Write a query to independently:
+- order first_col in ascending order.
+- order second_col in descending order.
+-- Modeled after a learning example from Scaler.
+
+data 
+Sample Input                                                     Sample Output
+| first_col          | second_col          |                     |first_col           | second_col           |
+| ------------------ | ------------------- |                     |------------------- | -------------------- |
+| 4                  | 2                   |                     |1                   | 4                    |
+| 2                  | 3                   |                     |2                   | 3                    |
+| 3                  | 1                   |                     |3                   | 2                    |
+| 1                  | 4                   |                     |4                   | 1                    |
+
+Approach : 
+- select the first_col column of the data table and assign a row number to each value using the ROW_NUMBER() function with the OVER clause.
+- This row number is based on the ascending order of the values in the first_col column. Give the subquery an alias x.
+- select the second_col column of the data table and assign a row number to each value using the ROW_NUMBER() function with the OVER clause.
+- This row number is based on the descending order of the values in the second_col column. Give the subquery an alias y.
+- In the main query, join the two subqueries on their respective row numbers using the ON clause, and SELECT the values from the first_col and second_col columns.
+
+Solution : 
+
+SELECT first_col, second_col
+FROM 
+(SELECT first_col , ROW_NUMBER() OVER (ORDER BY first_col) AS row_num 
+FROM data ) x 
+JOIN 
+(SELECT second_col , ROW_NUMBER() OVER (ORDER BY second_col DESC ) AS row_num
+FROM data) y 
+ON x.row_num = y.row_num;
