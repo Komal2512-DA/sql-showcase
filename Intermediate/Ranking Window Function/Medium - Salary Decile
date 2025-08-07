@@ -1,0 +1,43 @@
+Problem Description:
+Write a query to list all departments and their average salary, along with their decile based on the average salary in descending order.
+
+Decile refers to any of the 10 equal bins into which a data set can be divided, based on the values of a particular variable.
+Here, based on the average salary we need to divide data into 10 equal bins. Where 1st bin consists highest average salaries and the 10th bin consists of the lowest average salaries.
+Result:
+Return the output ordered by avg_salary in descending order and by salary_decile in ascending order.
+-- Picked this one up from Scaler’s learning platform.
+
+| employees                    |   | departments              |
+| ---------------------------- | - | ------------------------ |
+| employee_id INT              |   | department_id INT        |
+| first_name VARCHAR           |   | department_name VARCHAR  |
+| last_name VARCHAR            |   | manager_id INT           |
+| email VARCHAR                |   | location_id INT          |
+| phone_number VARCHAR         |   |                          |
+| hire_date DATE               |   |                          |
+| job_id VARCHAR               |   |                          |
+| salary DECIMAL(10,2)         |   |                          |
+| commission_pct DECIMAL(5,2)  |   |                          |
+| manager_id INT               |   |                          |
+| department_id INT            |   |                          |
+
+Approach : 
+- Create a CTE of department name and its Average of salary of each department by performing group by. 
+- Joins the two tables based on the common department_id column.
+- On the basis of avg salary of each department , divides them into decile . 
+- The NTILE(10) divides the rows into 10 groups based on the ordering of average salary in descending order.
+- Sort the result set by the avg_salary column in descending order, and within each average salary, it will further sort by the salary_decile column in ascending order.
+
+Solution : 
+
+WITH data AS (
+    SELECT department_name , AVG(salary) AS avg_salary
+    FROM employees e 
+    JOIN departments d 
+    ON e.department_id = d.department_id
+    GROUP BY department_name
+)
+
+SELECT * , NTILE(10) OVER (ORDER BY avg_salary DESC) AS salary_decile
+FROM data 
+ORDER BY avg_salary DESC , salary_decile ;
