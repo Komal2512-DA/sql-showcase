@@ -1,0 +1,38 @@
+Problem Description:
+You have been asked to write a query to calculate the total number of comments received by each user within 30 or fewer days before the date '2020-02-10'. The result should be saved in a column named comments_count.
+
+Note:
+The result should include the columns user_id and comments_count.
+The result should be ordered by user_id in ascending order for clarity and ease of reference.
+Users who haven't received any comments in the defined time period should not be included in the output.
+-- 
+| fb_comments      |              | Sample Output                  |       |           |                               |
+| ---------------- | ------------ | ------------------------------ | ----- | --------- | ----------------------------- |
+| user_id          | created_at   | number_of_comments             |       | user_id   | comments_count                |
+| ---------        | ------------ | ------------------------------ | ----- | --------- | ----------------------------- |
+| 4                | 2019-12-22   | 1                              |       | 5         | 1                             |
+| 4                | 2020-02-15   | 1                              |       | 8         | 4                             |
+| 4                | 2020-01-01   | 1                              |       |           |                               |
+| 4                | 2020-01-23   | 1                              |       |           |                               |
+| 5                | 2019-12-19   | 1                              |       |           |                               |
+| 5                | 2019-12-19   | 1                              |       |           |                               |
+| 5                | 2019-12-24   | 1                              |       |           |                               |
+| 7                | 2020-01-01   | 1                              |       |           |                               |
+| 7                | 2020-02-15   | 1                              |       |           |                               |
+| 8                | 2020-02-10   | 1                              |       |           |                               |
+| 8                | 2020-02-05   | 1                              |       |           |                               |
+| 8                | 2020-01-13   | 1                              |       |           |                               |
+| 8                | 2020-01-22   | 1                              |       |           |                               |
+
+Approach : 
+- Sets the condition for the time period of interest where the created_at column falls between 30 days prior to ‘2020-02-10’ and ‘2020-02-10’.
+- Groups the result set by the user_id column, so the subsequent aggregation function operates on each unique user_id.
+- SELECT the user_id column and the sum of the number_of_comments column, which is aliased as ‘comments_count’.
+- Sorts the result set in ascending order based on the user_id column.
+
+Solution : 
+SELECT user_id , SUM(number_of_comments) AS comments_count 
+FROM fb_comments
+WHERE created_at BETWEEN DATE_SUB('2020-02-10', INTERVAL 30 day)  AND '2020-02-10'
+GROUP BY user_id
+ORDER BY user_id;
