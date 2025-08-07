@@ -1,0 +1,21 @@
+Problem Staement:
+Write a query to retrieve the productLine, productName, and MSRP (i.e., Manufacturer's Suggested Retail Price) for all products, along with the third most expensive product and the fifth most expensive product within each product line, based on their MSRP.
+
+Result:
+-Return the columns productLine, productName, MSRP, thirdMostExpensive_Product and fifthMostExpensive_Product
+-Return the output by productLine in ascending order and by MSRP in descending order.
+-- I came across a similar problem on Scaler!
+
+Approach : 
+- specifies the columns to be selected in the result set. It includes the productLine, productName, and MSRP columns from the products table.
+- The NTH_VALUE function is applied to the productName column and retrieves the value of the third product (based on the descending order of MSRP) within each productLine partition.
+- The NTH_VALUE function is applied to the productName column and retrieves the value of the fifth product (based on the descending order of MSRP) within each productLine partition.
+- Sorts the result set first by productLine in ascending order and then by MSRP in descending order.
+
+Solution : 
+
+SELECT  productLine , productName , MSRP , 
+    NTH_VALUE(productName, 3 ) OVER (PARTITION BY productLine ORDER BY MSRP DESC) AS thirdMostExpensive_Product , 
+    NTH_VALUE(productName, 5) OVER (PARTITION BY productLine ORDER BY MSRP DESC ) AS fifthMostExpensive_Product
+FROM products 
+ORDER BY productLine, MSRP DESC ; 
