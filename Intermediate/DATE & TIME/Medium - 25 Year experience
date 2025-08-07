@@ -1,0 +1,32 @@
+Problem Statement:
+You have been asked to display the details of managers who have been working in the company for more than 25 years as of June 8, 2022.
+This involves calculating the total number of years each manager has been with the company and saving it as Experience.
+
+Result:
+-The result should include the columns employee_id, first_name, last_name, salary, department_name, and Experience.
+-The result should be ordered by employee_id in ascending order for clarity and ease of reference.
+Note:
+To get the Experience of the managers, calculate the difference in days between the hire date and June 8, 2022.
+Then, convert this difference into years by dividing by 365.
+Don't forget to round the total years up to four decimal points.
+-- I came across a similar problem on Scaler!
+
+
+Approach : 
+- Select the columns first_name, last_name, employee_id, and salary from the managers’s table and department_name from the department’s table.
+- Use the datediff() function between the given date and hire_date column and divide the difference by 365 to extract the total working years of the employees. Save the column as ‘Experience’.
+- Using Self join, join the employees with itself and compare the employee_id and manager_id from the employees table. So, this gives the employee details who are managers.
+- Using Inner join, join the managers and departments tables and compare the department_id. Inner join because we need to filter the common records from manager and departments.
+- In the where clause apply the same computation for Experience and filter the records using the ‘>’ operator of those managers who has been working for more than 25 years.
+
+Solution : 
+
+SELECT DISTINCT m.employee_id, m.first_name, m.last_name, m.salary, department_name,
+    ROUND(DATEDIFF( '2022-06-08', m.hire_date ) / 365, 4) as Experience 
+FROM employees e 
+JOIN employees m 
+ON e.manager_id = m.employee_id
+JOIN departments d 
+ON m.department_id = d.department_id 
+WHERE DATEDIFF( '2022-06-08', m.hire_date ) / 365 > 25
+ORDER BY m.employee_id;
