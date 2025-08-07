@@ -1,0 +1,42 @@
+Problem Statement:
+- Write a query to find the starting maximum salary of the first job that every employee held and return it as 'first_job_sal'.
+
+Result:
+-Return the columns 'first_name', 'last_name', 'first_job_sal'.
+-Return the result sorted by first_name in ascending order.
+Note:
+-Refer to the job_history table to get the job details of the employees.
+-Refer to the employees table for first_name and last_name.
+-Refer to the jobs table for the maximum salary.
+-- A Scaler-inspired twist to test your skills!
+
+| employees           | Data Type     |   | jobs           | Data Type     |   | job_history    | Data Type     |
+| ------------------- | ------------- | - | -------------- | ------------- | - | -------------- | ------------- |
+| employee_id         | INTEGER       |   | job_id         | VARCHAR(10)   |   | employee_id    | INTEGER       |
+| first_name          | VARCHAR(20)   |   | job_title      | VARCHAR(50)   |   | start_date     | DATE          |
+| last_name           | VARCHAR(25)   |   | min_salary     | INTEGER       |   | end_date       | DATE          |
+| email               | VARCHAR(25)   |   | max_salary     | INTEGER       |   | job_id         | VARCHAR(10)   |
+| phone_number        | VARCHAR(20)   |   |                |               |   | department_id  |INTEGER        |
+| hire_date           | DATE          |   |                |               |   |                |               |
+| job_id              | VARCHAR(10)   |   |                |               |   |                |               |
+| salary              | INTEGER       |   |                |               |   |                |               |
+| commission_pct      | DECIMAL(3,2)  |   |                |               |   |                |               |
+| manager_id          | INTEGER       |   |                |               |   |                |               |
+| department_id       | INTEGER       |   |                |               |   |                |               |
+
+Approach : 
+- Select the columns first_name, last_name from the employee’s table, and max_salary from the jobs table.
+- Using Inner join, join the employees and job_history tables on employee_id. Inner join because we need to filter the common records from employees and job_history.
+- Using Inner join, join the jobs and job_history tables on job_id. Inner join because we need to filter the common records from jobs and job_history.
+- Use the first_value() window function on the max_salary column from the jobs table to get the maximum salary of the first job.
+- Apply the distinct keyword on the first_name to avoid duplicates and return only the unique values.
+
+Solution : 
+SELECT DISTINCT first_name , last_name , 
+    FIRST_VALUE(max_salary) OVER (PARTITION BY jh.employee_id ORDER BY jh.start_date) AS first_job_sal
+FROM employees e 
+JOIN job_history jh 
+ON e.employee_id = jh.employee_id
+JOIN jobs j 
+ON j.job_id = jh.job_id 
+ORDER BY first_name;
