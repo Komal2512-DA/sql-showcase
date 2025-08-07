@@ -1,0 +1,29 @@
+Problem Statement:
+Write a query to find the first day of the first job of every employee and return it as 'first_day_job'.
+
+Result:
+-Return the columns 'first_name', and 'first_day_job'.
+-Return the result ordered by first_name in ascending order.
+-- Got the idea from a Scaler session.
+
+| **employees Table** | **Data Type** |   | **job_history Table**  | **Data Type** |
+| ------------------- | ------------- | - | ---------------------- | ------------- |
+| employee_id         | INTEGER       |   | employee_id            | INTEGER       |
+| first_name          | VARCHAR       |   | start_date             | DATE          |
+| last_name           | VARCHAR       |   | end_date               | DATE          |
+| email               | VARCHAR       |   | job_id                 | VARCHAR       |
+| phone_number        | VARCHAR       |   | department_id          | INTEGER       |
+| hire_date           | DATE          |   |                        |               |
+| job_id              | VARCHAR       |   |                        |               |
+| salary              | INTEGER       |   |                        |               |
+| commission_pct      | DECIMAL(2,2)  |   |                        |               |
+| manager_id          | INTEGER       |   |                        |               |
+| department_id       | INTEGER       |   |                        |               |
+
+Solution : 
+
+SELECT DISTINCT first_name ,FIRST_VALUE(start_date) OVER (PARTITION BY jh.employee_id ORDER BY start_date) AS first_day_job
+FROM employees e 
+JOIN job_history jh
+ON e.employee_id = jh.employee_id
+ORDER BY first_name;
