@@ -1,0 +1,42 @@
+Problem Statement:
+-Write a query to get the total amount for each customer who made payments along with their sales quartile based on the amount in descending order.
+-Quartile refers to any of the 4 equal bins into which a data set can be divided, based on the values of a particular variable.
+Here, based on the total_amount we need to divide data into 4 equal bins. Where the 1st bin consists of the highest total_amount and the 4th bin consists of the lowest total_amount.
+Result:
+-Return the columns customer_id, total_amount, and sales_quartile.
+-The output should be ordered by total_amount in descending order and by sales_quartile in ascending order.
+-- An educational variation inspired by Scaler.
+
+| **Table: customers**       | **Table: payments**  |
+| -------------------------- | -------------------- |
+| customerNumber INT         | customerNumber INT   |
+| customerName VARCHAR       | checkNumber VARCHAR  |
+| contactLastName VARCHAR    | paymentDate DATE     |
+| contactFirstName VARCHAR   | amount DECIMAL(10,2) |
+| phone VARCHAR              |                      |
+| addressLine1 VARCHAR       |                      |
+| addressLine2 VARCHAR       |                      |
+| city VARCHAR               |                      |
+| state VARCHAR              |                      |
+| postalCode VARCHAR         |                      |
+| country VARCHAR            |                      |
+| salesRepEmployeeNumber INT |                      |
+| creditLimit DECIMAL(15,2)  |                      |
+
+Approach : 
+- SELECT clause query will retrieve the customerName column from the customers table (aliased as c), the sum of amount column from the payments table (aliased as p) as total_amount.
+- Join the two table customer and payment with two tables based on the common customerNumber column.
+- Grouped the customerName and summation the amount .
+- sales_quartile calculated using the NTILE() window function divides the rows into 4 groups based on the descending order of the total amount.
+- First sort the result set by the total_amount column in descending order, and within each total amount, it will further sort by the sales_quartile column.
+
+Solution : 
+
+SELECT customerName , total_amount, NTILE(4) OVER (ORDER BY total_amount DESC) AS sales_quartile
+FROM 
+(SELECT customerName , SUM(amount) AS total_amount
+FROM customers c  
+JOIN payments p 
+ON c.customerNumber = p.customerNumber
+GROUP BY customerName) x 
+ORDER BY total_amount DESC , sales_quartile;
