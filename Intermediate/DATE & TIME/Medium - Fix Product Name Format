@@ -1,0 +1,23 @@
+Problem Statement:
+You have been asked to write a query to standardize the product names and count the number of times each product was sold per month.
+
+The details required include:
+product_name : The name of the product in lowercase without leading or trailing white spaces.
+sale_date : The month and year of the sale in the format 'YYYY-MM'.
+total : The number of times the product was sold in that month.
+Note:
+-The result should be ordered by product_name in ascending order.
+-In case of a tie, the results should be ordered by sale_date in ascending order.
+-- The idea for this problem comes from Scaler.
+
+Approach : 
+- The lowercase and trimmed version of the product_name column, the formatted sale_date column in the format “YYYY-MM”, and the count of sale_id for each unique combination of lowercase trimmed product_name and formatted sale_date.
+- Groups the result set by the lowercase trimmed product_name and formatted sale_date. It ensures that the count of sale_id is calculated for each unique combination of these two columns.
+- Sorts the result set in ascending order first by product_name and then by sale_date.
+
+Solution : 
+
+SELECT LOWER(TRIM(product_name)) AS product_name, DATE_FORMAT(sale_date, "%Y-%m") AS sale_date, COUNT(sale_id) AS total
+FROM sales
+GROUP BY LOWER(TRIM(product_name)), DATE_FORMAT(sale_date,"%Y-%m")
+ORDER BY product_name ASC, sale_date ASC;
