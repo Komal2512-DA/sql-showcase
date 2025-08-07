@@ -1,0 +1,41 @@
+Problem Statement:
+Write a query to calculate the net salary for the employees and save the column as 'Net_Salary' and display the details of those employees whose net salary is greater than 15000.
+
+Use the CTE method.
+Note: To calculate the 'Net_Salary' = salary + salary *(commission_pct).
+If the column 'comission_pct' consists of null values replace them with zeros.
+Result:
+-Return the columns 'employee_id', 'first_name', 'last_name', 'salary', and 'Net_Salary'.
+-Return the result ordered by employee_id in ascending order.
+-- Picked this one up from Scaler’s learning platform.
+
+| employees Table     | Data Type     | 
+| ------------------- | ------------- |
+| employee_id         | INTEGER       | 
+| first_name          | VARCHAR(20)   | 
+| last_name           | VARCHAR(25)   | 
+| email               | VARCHAR(25)   | 
+| phone_number        | VARCHAR(20)   |  
+| hire_date           | DATE          |
+| job_id              | VARCHAR(10)   | 
+| salary              | INTEGER       |  
+| commission_pct      | DECIMAL(3,2)  |  
+| manager_id          | INTEGER       |  
+| department_id       | INTEGER       | 
+
+Approach : 
+- Using the CTE method, select the columns employee_id, first_name, last_name, and salary from the employee’s table.
+- If the column ‘comission_pct’ consists of null values replace them with zeros using the ifnull() function.
+- Calculate Net Salary. 
+- In the outer query, select all the columns from the inner query, and in the where clause use the ‘>’ operator to filter the records whose net salary is greater than 15000.
+
+Solution : 
+
+WITH final AS (
+    SELECT employee_id , first_name , last_name , salary , salary + salary* IFNULL(commission_pct, 0) as Net_Salary
+    FROM employees 
+)
+SELECT *
+FROM final 
+WHERE Net_Salary > 15000
+ORDER BY employee_id;
