@@ -1,0 +1,49 @@
+Problem Statement:
+A company wants to hire new employees. The budget of the company for the salaries is $70000.
+
+The company's criteria for hiring are:
+-Keep hiring the senior with the smallest salary until you cannot hire any more seniors.
+-Use the remaining budget to hire the junior with the smallest salary.
+-Keep hiring the junior with the smallest salary until you cannot hire any more juniors.
+Write a query to find the IDs of seniors and juniors hired under the mentioned criteria.
+
+Result:
+Return the result table ordered by the employee_id column in ascending order.
+-- This task resembles a Scaler DSA question.
+
+| candidates     |              |                                                      |       |    Sample Output         |
+| -------------- | ------------ | ---------------------------------------------------- | ----- | ------------------------ |
+| employee_id    | experience   | salary                                               |       | employee_id              |
+| -------------  | ------------ | ---------------------------------------------------- | ----- | ------------------------ |
+| 1              | Junior       | 10000                                                |       | 1                        |
+| 9              | Junior       | 15000                                                |       | 2                        |
+| 2              | Senior       | 20000                                                |       | 9                        |
+| 11             | Senior       | 16000                                                |       | 11                       |
+| 13             | Senior       | 50000                                                |       |                          |
+| 4              | Junior       | 40000                                                |       |                          |
+
+Approach : 
+- Create CTE which includes the required columns and calculate running total on the basis of salary order so we can easily have a look which is under budget. 
+- First , Retreive data using SELECT clause where experience is senior and summations of those seniors should be less than 70000.
+- Next , Calculate left budget , so that in that remaining budget , we can filters the juniors. 
+- For calculating left budget , just filter senior experience and their max budget which is less than 70000 and subtract that amount from the total budget 70000. 
+- Filter out junior experience and employees which is less than the left budget . 
+- UNION both of them and sort the records at the end .
+
+Solution : 
+
+With data AS (
+SELECT employee_id ,experience,  salary , SUM(salary) OVER (PARTITION BY experience ORDER BY salary) AS cal_salary
+FROM candidates )
+
+
+SELECT employee_id
+FROM data 
+WHERE experience = 'Senior' AND cal_salary < 70000
+UNION 
+SELECT employee_id
+FROM data 
+WHERE experience = 'Junior' AND cal_salary < (
+    SELECT 70000 -  IFNULL(MAX(cal_salary), 0) FROM data WHERE experience = 'Senior' AND cal_salary < 70000
+)
+ORDER BY employee_id;
