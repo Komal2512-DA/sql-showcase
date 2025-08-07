@@ -1,0 +1,44 @@
+Problem Statement:
+Write a SQL query to report the IDs of all the employees whose information is missing.
+
+The information of an employee is missing if:
+-The employee's name is missing, or
+-The employee's salary is missing.
+Result:
+Return the result table ordered by employee_id in ascending order.
+-- A variation of a problem discussed in Scaler.
+
+|     employees |              |              |    salaries   |          |
+| ------------- | ------------ | ------------ | ------------- | -------- |
+| employee_id   | name         |              | employee_id   | salary   |
+| ------------- | ------------ | ---          | ------------- | -------- |
+| 2             | Crew         |              | 5             | 76071    |
+| 4             | Haven        |              | 1             | 22517    |
+| 5             | Kristian     |              | 4             | 63539    |
+
+-Employees 1, 2, 4, and 5 are working at this company.
+-The name of employee 1 is missing.
+-The salary of employee 2 is missing.
+
+Approach : 
+- Final Create CTE of the full join using UNION of left and right join of the table employee and salary.
+- Filter where the emp name is null or salary is null. 
+- Sort the result using ORDER clause by emp id. 
+
+Solution : 
+
+WITH final AS (
+    (SELECT e.employee_id , name , salary
+    FROM employees e 
+    LEFT  JOIN salaries s 
+    ON e.employee_id = s.employee_id)
+    UNION 
+    (SELECT s.employee_id, name , salary 
+    FROM employees e 
+    RIGHT JOIN salaries s 
+    ON e.employee_id = s.employee_id)
+)
+SELECT employee_id 
+FROM final 
+WHERE name IS NULL OR salary IS NULL 
+ORDER BY employee_id;
