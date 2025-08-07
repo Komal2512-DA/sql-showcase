@@ -1,0 +1,24 @@
+Problem Statement:
+You have been asked to display the details of employees who were hired between the specified date '1998-01-01' and six months before this date (i.e., '1997-07-01').
+Additionally, the report should only include employees with the highest salary in each department.
+
+The result should contain the columns employee_id, first_name, last_name, salary, hire_date, and department_id.
+The result should be ordered by department_id and employee_id in ascending order for clarity and ease of reference.
+-- You’ll find a similar version on Scaler.
+
+Approach : 
+- Select the columns employee_id, first_name, last_name, salary, hire_date, and department_id from the employee’s table.
+- Use the window functions rank() or dense_rank() to rank the employees in each department based on the highest salary. In the over() clause partition by the department_id and order by the salary in descending order.
+- In the where clause, use the between operator on the hire_date column to filter the records of the employees who were hired between the six months before from the ‘1998-01-01’.
+- In the outer query in the where clause, retrieve the employee_id, first_name, last_name, salary, hire_date, and department_id of the employees whose highest_salary is 1 this gives the details of the employees with the highest salary in each department.
+
+Solution : 
+
+SELECT employee_id, first_name , last_name , salary, hire_date, department_id
+FROM 
+(SELECT employee_id , first_name , last_name, salary , hire_date , department_id , 
+    DENSE_RANK() OVER (PARTITION BY department_id ORDER BY salary DESC) AS highest_salary
+FROM employees
+WHERE  hire_date BETWEEN  DATE_SUB('1998-01-01', INTERVAL 6 MONTH) and '1998-01-01') x
+WHERE highest_salary = 1
+ORDER BY department_id, employee_id;
