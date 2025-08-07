@@ -1,0 +1,36 @@
+Problem Statement:
+Write a Query to find the first day of the most recent job of every employee and return it as the 'recent_job'. Refer to the job_history table to get the job details of the employees.
+
+Result:
+-Return the columns first_name and recent_job.
+-Return the output ordered by first_name in ascending order.
+-- Think you can crack this Scaler-style problem?
+
+|     employees Table |     Data Type |   |      job_history Table | Data Type     |
+| ------------------- | ------------- | - | ---------------------- | ------------- |
+| employee_id         | INTEGER       |   | employee_id            | INTEGER       |
+| first_name          | VARCHAR       |   | start_date             | DATE          |
+| last_name           | VARCHAR       |   | end_date               | DATE          |
+| email               | VARCHAR       |   | job_id                 | VARCHAR       |
+| phone_number        | VARCHAR       |   | department_id          | INTEGER       |
+| hire_date           | DATE          |   |                        |               |
+| job_id              | VARCHAR       |   |                        |               |
+| salary              | INTEGER       |   |                        |               |
+| commission_pct      | DECIMAL(2,2)  |   |                        |               |
+| manager_id          | INTEGER       |   |                        |               |
+| department_id       | INTEGER       |   |                        |               |
+
+Approach : 
+- Select the columns first_name from the employee’s table and start_date from the job_history table.
+- Using Inner join, join the employees and job_history tables on employee_id. Inner join because we need to filter the common records from employees and job_history. The job_history table has the history of all the jobs of every employee.
+- Use the first_value() window function on the start_date to get the first day of the most recent job. In the over() clause partition by the employee_id and order the partition of the employee in the descending order of the start_date and save the column as ‘recent_job’.
+- Apply the distinct keyword on the first_name to avoid duplicates and return only the unique values of the employee’s names.
+- Use order by clause to order the output by first_name in ascending order.
+
+Soluton : 
+
+SELECT DISTINCT first_name , FIRST_VALUE(start_date) OVER (PARTITION BY jh.employee_id ORDER BY start_date DESC ) AS recent_job
+FROM employees e 
+JOIN job_history jh 
+ON e.employee_id = jh.employee_id
+ORDER BY first_name;
