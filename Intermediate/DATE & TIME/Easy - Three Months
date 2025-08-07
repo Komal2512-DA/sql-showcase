@@ -1,0 +1,25 @@
+Problem Statement:
+You have been asked to display the details of employees who were hired between the specified date '1998-01-01' and three months from that date.
+
+- The result should include the columns employee_id, first_name, last_name, salary, department_name, hire_date, and city.
+- The result should be ordered by employee_id in ascending order to maintain clarity and ease of reference.
+Note: To get the three months interval, use the DATE_ADD() function and add the interval by 90 days from the given date (i.e., three months).
+-- Derived from a Scaler exercise.
+
+Approach : 
+- Select the columns employee_id, first_name, last_name, salary, and hire_date from the employee’s table. Select department_name from the department’s table. Select the column city from the locations table.
+- Using Inner join, join the employees and departments tables on department_id. Inner join because we need to filter the common records from employees and departments.
+- Using Inner join, join the departments and locations tables on location_id. Inner join because we need to filter the common records from departments and locations.
+- In the where clause, use the between operator on the hire_date column to filter the records of the employees who were hired between the three months from ‘1998-01-01’.
+  Or we can add 90 days instead of 3 month , all upto on you .
+- Sort the records in the ascending order on the basis of employee id.
+
+Solution : 
+SELECT e.employee_id, first_name, last_name, salary, department_name, hire_date,  city
+FROM employees e 
+JOIN departments d 
+ON e.department_id = d.department_id
+JOIN locations l
+ON l.location_id = d.location_id
+WHERE hire_date BETWEEN  '1998-01-01' AND DATE_ADD('1998-01-01' , INTERVAL 3 MONTH) 
+ORDER BY e.employee_id;
