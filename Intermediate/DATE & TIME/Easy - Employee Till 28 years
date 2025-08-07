@@ -1,0 +1,22 @@
+Problem Statement:
+You have been asked to display the details of employees who have been working in the company for at least 28 years as of June 8, 2022.
+This involves calculating the total number of years (Total_years) each employee has been with the company and identifying those who meet or exceed the 28-year threshold.
+
+-The result should include the columns employee_id, first_name, last_name, and the Total_years they've worked with us.
+-The result should be ordered by employee_id in ascending order for clarity and ease of reference.
+Note:
+-To get the Total_years, calculate the difference in days between the hire date and June 8, 2022.
+-Then, convert this difference into years by dividing by 365.
+-Don't forget to round the total years up to two decimal points.
+
+Approach : 
+-Select the columns employee_id, first_name, last_name, and hire_date from the employee’s table.
+-Use the datediff() function between the given date and hire_date column and divide the difference by 365 to extract the total working years of the employees. Save the column as "Total_years".
+-In the where clause apply the same computation for Total_years and filter the records using the ‘>=’ operator of those employees who has been working for atleast 28 years.
+
+Solution : 
+
+SELECT employee_id , first_name , last_name , ROUND(DATEDIFF('2022-06-08', hire_date)/365, 2) AS Total_years
+FROM employees
+WHERE TIMESTAMPDIFF(YEAR, hire_date, '2022-06-08') >= 28
+ORDER BY employee_id;
