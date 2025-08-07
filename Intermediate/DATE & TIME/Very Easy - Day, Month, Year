@@ -1,0 +1,22 @@
+Problem Statement:
+You are tasked with extracting critical data from the Human Resource database of your current company in order to support year-end financial analysis.
+
+Write an SQL query to retrieve the following information:
+-employee_id, first_name, last_name, salary, hire_date, along with the columns Day, Month, and Year extracted from the employee's hire_date.
+-Filter the data to include only employees hired in January 2000 and earning salaries greater than $5000.
+-The results should be sorted by employee_id in ascending order to facilitate comprehensive review and performance evaluation.
+-- The idea for this problem comes from Scaler.
+
+Approach : 
+- Select the columns employee_id, first_name, last_name, salary, and hire_date from the employee’s table.
+- Use the extract() function on the hire_date column. 
+  You can either use EXTRACT() OR [DAY() , YEAR(), MONTH() ] upto all on you. 
+- Filter out the year and month based on the condition using BETWEEN clause. 
+- Sort the record by employee_id .
+
+Solution : 
+
+SELECT employee_id, first_name, last_name, salary, hire_date, DAY(hire_date) AS Day, MONTH(hire_date) AS Month, YEAR(hire_date) AS Year
+FROM employees
+WHERE hire_date BETWEEN '2000-01-01' AND '2000-01-31' AND salary > 5000
+ORDER BY employee_id ;
