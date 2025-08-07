@@ -1,0 +1,46 @@
+Problem Statement:
+- Each row in the table contains the visit_date and visit_id to the mall with the number of people during the visit. No two rows will have the same visit_date
+- Write a query to find and display records where there are three or more consecutive visits with each having at least 100 people.
+
+Result:
+- Return the columns visit_id, visit_date, and people.
+- Return the result ordered by visit_date in ascending order.
+
+| mall Table     |              |                   |       |Sample Output        |          | 
+| -------------- | ------------ | ----------------- | ----- | ---- | ------------ | -------- |
+| id             | visit_date   | people            |       | id   | visit_date   | people   |
+| ----           | ------------ | --------          | ----- | ---- | ------------ | -------- |
+| 1              | 2022/07/13   | 50                |       |      |              |          |
+| 2              | 2022/07/14   | 190               |       |      |              |          |
+| 3              | 2022/07/15   | 20                |       |      |              |          |
+| 4              | 2022/07/16   | 300               |       | 4    | 2022/07/16   | 300      |
+| 5              | 2022/07/18   | 450               |       | 5    | 2022/07/18   | 450      |
+| 6              | 2022/07/19   | 600               |       | 6    | 2022/07/19   | 600      |
+| 7              | 2022/07/20   | 110               |       | 7    | 2022/07/20   | 110      |
+| 8              | 2022/07/21   | 220               |       | 8    | 2022/07/21   | 220      |
+
+-- Styled after typical problems used in Scaler bootcamps.
+
+Approach : 
+- Select the columns id, visit_date, and people from the table mall.
+- In the inner query, use the lead() window function on the people column, and in the over() clause order the data by visit_date in ascending order and save the column as nxt_day_people which gives the number of people visited the mall the next day.
+  Similarly, calculate the lead() based on the people column for the next two days and save the column as nxt2_day_people.
+- Use the lag() window function on the people column and in the over() clause order the data by visit_date in ascending order and save the column as prev_day_people which gives the number of people visited the mall the previous day.
+  Similarly, calculate the lag() based on the people column for the previous two days and save the column as prev2_day_people.
+- In the outer query inside the where clause we check if people >= 100 and nxt_day_people >= 100 and nxt2_day_people >= 100 or people >= 100 and prev_day_people >= 100 and prev2_day_people >= 100 or people >= 100 and prev_day_people >= 100 and nxt_day_people >= 100.
+- Use the order by clause and order the output based on the visit_date in ascending order.
+
+Solution : 
+
+SELECT id, visit_date, people
+FROM 
+(SELECT id, visit_date , people , 
+        LEAD(people) OVER (ORDER BY visit_date) AS nxt_day_people, 
+        LEAD(people, 2) OVER (ORDER BY visit_date) AS nxt2_day_people, 
+        LAG(people) OVER (ORDER BY visit_date) AS prev_day_people, 
+        LAG(people, 2) OVER (ORDER BY visit_date) AS prev2_day_people
+FROM mall ) x 
+WHERE (people >= 100 AND nxt2_day_people>= 100 AND nxt_day_people >= 100 ) OR 
+        (people >= 100 AND prev2_day_people>= 100 AND prev_day_people>= 100) OR 
+        (people >= 100 AND nxt_day_people>= 100 AND prev_day_people>= 100)
+ORDER BY visit_date;
