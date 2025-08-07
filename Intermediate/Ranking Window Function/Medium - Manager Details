@@ -1,0 +1,45 @@
+Problem Statement:
+Create a view as 'Manager_details' that has manager details i.e., employee_id, manager's name(first name and last name separated by space) as 'Manager', salary, phone_number, department_id, department_name, street_address, city, country_name.
+Display the details of the managers with the Top 5 highest salaries from the view 'Manager_details"
+
+Result:
+-Return the columns employee_id, Manager, salary, and department_name, city, and country_name from the view Manager_details.
+-Return the result ordered by salary column in descending order and by Manager in ascending order.
+No duplication of manager details is expected in the output.
+-- Originally featured in Scaler’s curriculum.
+
+| employees                    |   | departments              |   | locations               |   | countries             |
+| ---------------------------- | - | ------------------------ | - | ----------------------- | - | --------------------- |
+| employee_id INT              |   | department_id INT        |   | location_id INT         |   | country_id VARCHAR    |
+| first_name VARCHAR           |   | department_name VARCHAR  |   | street_address VARCHAR  |   | country_name VARCHAR  |
+| last_name VARCHAR            |   | manager_id INT           |   | postal_code VARCHAR     |   | region_id INT         |
+| email VARCHAR                |   | location_id INT          |   | city VARCHAR            |   |                       |
+| phone_number VARCHAR         |   |                          |   | state_province VARCHAR  |   |                       |
+| hire_date DATE               |   |                          |   | country_id VARCHAR      |   |                       |
+| job_id VARCHAR               |   |                          |   |                         |   |                       |
+| salary DECIMAL(10,2)         |   |                          |   |                         |   |                       |
+| commission_pct DECIMAL(5,2)  |   |                          |   |                         |   |                       |
+| manager_id INT               |   |                          |   |                         |   |                       |
+| department_id INT            |   |                          |   |                         |   |                       |
+
+
+Solution : 
+
+CREATE VIEW Manager_details AS (
+    SELECT m.employee_id , CONCAT(m.first_name, ' ', m.last_name) AS Manager , m.salary , d.department_name ,l.city, country_name
+    , DENSE_RANK() OVER (ORDER BY m.salary DESC ) AS drnk
+    FROM employees e 
+    JOIN employees m 
+    ON e.manager_id = m.employee_id
+    JOIN departments d 
+    ON m.department_id = d.department_id
+    JOIN locations l 
+    ON l.location_id = d.location_id
+    JOIN countries c 
+    ON c.country_id = l.country_id
+);
+
+SELECT DISTINCT employee_id, Manager , salary, department_name , city, country_name
+FROM Manager_details
+WHERE drnk <= 5
+ORDER BY salary DESC , Manager;
