@@ -1,0 +1,48 @@
+Problem Statement:
+Write a query to rearrange the Products table so each row has (product_id, store, price). If a product is unavailable in a store, do not include a row with that product_id and store combination in the result table.
+
+Result:
+Return the result ordered by product_id and store in ascending order.
+-- This challenge echoes a problem taught at Scaler.
+
+| Products             |          |                   |           |     |     Output   |          |                |
+| -------------------- | -------- | ----------------- | --------- | --- | ------------ | -------- | -------------- |
+| product_id           | store1   | store2            | store3    |     | product_id   | store    | price          |
+| ------------         | -------- | --------          | --------- | --- | ------------ | -------- | -------------- |
+| 0                    | 90       | 105               | 110       |     | 0            | store1   | 90             |
+| 1                    | NULL     | 87                | 85        |     | 0            | store2   | 105            |
+| 2                    | NULL     | 30                | 40        |     | 0            | store3   | 110            |
+|                      |                                                | 1            | store2   | 87             |          
+                                                                        | 1            | store3   | 85             |           
+                                                                        | 2            | store2   | 30             |            
+                                                                        | 2            | store3   | 40             |       
+
+Approach : 
+- Create a CTE of the query selects the product_id, a string literal ‘storeX’ as store, and the respective price column (store1, store2, or store3) from the Products table.
+- Perform Union operation to make sure every table has their specific store info and appending to the table to make them vertical . 
+- Filter that any store value should not be NULL.
+- Finally retrieve the info from the CTE and sort them .
+
+Solution : 
+WITH final AS (
+    SELECT product_id , 
+            'store1' AS store ,
+            store1 AS price 
+    FROM Products
+    WHERE store1 IS NOT NULL
+    UNION 
+    SELECT product_id,
+    'store2' AS store,
+    store2 AS price 
+    FROM Products
+    WHERE store2 IS NOT NULL
+    UNION 
+    SELECT product_id,
+    'store3' AS store ,
+    store3 AS price
+    FROM Products
+    WHERE store3 IS NOT NULL
+)
+SELECT * 
+FROM final
+ORDER BY product_id, store;
