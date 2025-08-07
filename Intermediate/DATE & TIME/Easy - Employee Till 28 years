@@ -8,6 +8,7 @@ Note:
 -To get the Total_years, calculate the difference in days between the hire date and June 8, 2022.
 -Then, convert this difference into years by dividing by 365.
 -Don't forget to round the total years up to two decimal points.
+-- This question is adapted from a Scaler problem.
 
 Approach : 
 -Select the columns employee_id, first_name, last_name, and hire_date from the employee’s table.
