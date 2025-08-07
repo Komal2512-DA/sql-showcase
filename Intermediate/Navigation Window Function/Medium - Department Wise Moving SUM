@@ -1,0 +1,21 @@
+Problem Statement:
+- Write a query to display each employee's employee_id, department_id, salary, hire_date, and two types of moving sums within each department, ordered by hire_date:
+mov_sum_1: The moving sum of salaries including the current row, the row before, and the row after. (with a window size of N=3)
+mov_sum_2: The moving sum of salaries, including the current row and the two rows before it. (with a window size of N=3)
+Result:
+-Return all columns displayed in the output.
+-- Picked this one up from Scaler’s learning platform.
+
+Approach : 
+- Define the window as the current row plus 1 preceding and 1 following row (ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING).
+- Define the window as the current row plus up to 2 preceding rows (ROWS BETWEEN 2 PRECEDING AND CURRENT ROW).
+- Use PARTITION BY department_id to ensure calculations are done separately for each department.
+- Use ORDER BY hire_date to sort employees by hire date within each department, defining the sequence for window frames.
+- For each employee, provide two different moving salary totals that help identify salary trends around each hire in the department.
+
+Solution : 
+
+SELECT employee_id , department_id , hire_date, salary , 
+        SUM(salary) OVER (PARTITION BY department_id ORDER BY hire_date ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) AS mov_sum_1,
+        SUM(salary) OVER (PARTITION BY department_id ORDER BY hire_date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS mov_sum_2
+FROM employees;
