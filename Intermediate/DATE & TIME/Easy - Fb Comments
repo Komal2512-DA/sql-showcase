@@ -5,7 +5,8 @@ Note:
 The result should include the columns user_id and comments_count.
 The result should be ordered by user_id in ascending order for clarity and ease of reference.
 Users who haven't received any comments in the defined time period should not be included in the output.
--- 
+-- I came across a similar problem on Scaler!
+
 | fb_comments      |              | Sample Output                  |       |           |                               |
 | ---------------- | ------------ | ------------------------------ | ----- | --------- | ----------------------------- |
 | user_id          | created_at   | number_of_comments             |       | user_id   | comments_count                |
